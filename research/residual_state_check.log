@@ -1,0 +1,18 @@
+m= 1 residuals=      2 expected=      2 OK
+m= 2 residuals=      4 expected=      4 OK
+m= 3 residuals=      8 expected=      8 OK
+m= 4 residuals=     16 expected=     16 OK
+m= 5 residuals=     32 expected=     32 OK
+m= 6 residuals=     64 expected=     64 OK
+m= 7 residuals=    128 expected=    128 OK
+m= 8 residuals=    256 expected=    256 OK
+m= 9 residuals=    512 expected=    512 OK
+m=10 residuals=   1024 expected=   1024 OK
+m=11 residuals=   2048 expected=   2048 OK
+m=12 residuals=   4096 expected=   4096 OK
+m=13 residuals=   8192 expected=   8192 OK
+m=14 residuals=  16384 expected=  16384 OK
+m=15 residuals=  32768 expected=  32768 OK
+m=16 residuals=  65536 expected=  65536 OK
+m=17 residuals= 131072 expected= 131072 OK
+m=18 residuals= 262144 expected= 262144 OK

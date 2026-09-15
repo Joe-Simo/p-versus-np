@@ -1,0 +1,27 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u56-u57 code/u56_u57_audit.ts
++ node --check research/validation/build-u56-u57/u56_u57_audit.js
++ node research/validation/build-u56-u57/u56_u57_audit.js
++ python -m py_compile code/u56_u57_independent.py
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u56-u57 code/u56_u57_audit.ts
++ node --check research/validation/build-u56-u57/u56_u57_audit.js
++ node research/validation/build-u56-u57/u56_u57_audit.js
++ python code/u56_u57_independent.py
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u56-u57 code/u56_u57_audit.ts
++ node --check research/validation/build-u56-u57/u56_u57_audit.js
++ /usr/bin/time -f 'exit=%x elapsed=%e seconds peak_kb=%M' node research/validation/build-u56-u57/u56_u57_audit.js
+exit=0 elapsed=9.14 seconds peak_kb=85384
++ python -m py_compile code/u56_u57_independent.py
++ python code/u56_u57_independent.py
++ node research/validation/build-u56-u57/u56_u57_audit.js
++ cmp research/validation/u56_u57_results.json research/validation/u56_u57_repeat.json
++ python code/u56_u57_independent.py
++ cmp research/validation/u56_u57_independent_results.json research/validation/u56_u57_independent_repeat.json
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u56-prior code/u54_u55_audit.ts
++ node research/validation/build-u56-prior/u54_u55_audit.js
++ cmp research/validation/u54_u55_final_results.json research/validation/u56_prior_u55_repeat.json

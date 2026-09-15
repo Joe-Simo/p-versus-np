@@ -1,0 +1,13 @@
+Environment: v22.16.0
+Version 5.8.3
+Python 3.13.5
+$ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u48-u49 code/u48_u49_audit.ts
+PASS strict TypeScript/no-unused checks (repository-equivalent lint/type checks)
+$ node --check research/validation/build-u48-u49/u48_u49_audit.js
+PASS compiled syntax
+$ node research/validation/build-u48-u49/u48_u49_audit.js > research/validation/u48_u49_reproduced.json
+PASS exhaustive assertions and byte-identical output reproduction
+$ python -m py_compile code/u48_u49_independent.py
+PASS Python compilation
+$ python code/u48_u49_independent.py > research/validation/u48_u49_independent_reproduced.json
+PASS independent assertions and byte-identical output reproduction

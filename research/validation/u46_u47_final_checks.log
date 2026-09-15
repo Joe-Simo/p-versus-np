@@ -1,0 +1,11 @@
+Assigned workspace: /mnt/data/02-p-versus-np
+v22.16.0
+Version 5.8.3
+Python 3.13.5
+$ tsc --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u46-u47 code/u46_u47_audit.ts
+PASS strict type/no-unused checks
+PASS compiled-code syntax
+PASS complete TypeScript results reproduced byte-for-byte
+PASS independent cofactor/orbit results reproduced byte-for-byte
+PASS prior supplied package members unchanged
+PASS U44 three-gate class matches newly enumerated raw class

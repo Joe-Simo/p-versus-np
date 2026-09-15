@@ -1,0 +1,21 @@
+{
+  "status": "pass",
+  "localCases": 64,
+  "affineFailure": {"a": 6, "b": 5, "product": 4, "affineSpan": [0,3,5,6], "fullRank": 3},
+  "equalityChecks": 87380,
+  "equalityRows": [
+    {"m":1,"gates":3,"binaryWords":4,"accepted":2},
+    {"m":2,"gates":7,"binaryWords":16,"accepted":4},
+    {"m":3,"gates":11,"binaryWords":64,"accepted":8},
+    {"m":4,"gates":15,"binaryWords":256,"accepted":16},
+    {"m":5,"gates":19,"binaryWords":1024,"accepted":32},
+    {"m":6,"gates":23,"binaryWords":4096,"accepted":64},
+    {"m":7,"gates":27,"binaryWords":16384,"accepted":128},
+    {"m":8,"gates":31,"binaryWords":65536,"accepted":256}
+  ],
+  "minimumZeroGateTypes": 1,
+  "minimumZeroTargetProbability": "1/16",
+  "independent": {"status":"pass","localCases":64,"zeroParentPairs":256,"minimumZeroGateTypes":1,"maximumZeroGateTypes":8},
+  "resultSha256": "a576ac798fb81c3e20113c0019bf94810e7106deaddb854966b3c520ea828791",
+  "independentSha256": "b2e878fd4c12422b7ce669f8920ac88f4eb616edfcf23844b2e00c8304aa5359"
+}

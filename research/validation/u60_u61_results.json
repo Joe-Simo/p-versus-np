@@ -1,0 +1,642 @@
+{
+  "status": "pass",
+  "localCases": 87360,
+  "affineLocal": 84,
+  "topologyCases": 4394,
+  "literalAssignments": "1299989",
+  "labelChecks": 44358,
+  "feasibilityChecks": 24294,
+  "affineDistributionChecks": 24294,
+  "rows": [
+    {
+      "q": 1,
+      "slots": 0,
+      "topologies": 1
+    },
+    {
+      "q": 1,
+      "slots": 1,
+      "topologies": 16
+    },
+    {
+      "q": 1,
+      "slots": 2,
+      "topologies": 400
+    },
+    {
+      "q": 2,
+      "slots": 0,
+      "topologies": 1
+    },
+    {
+      "q": 2,
+      "slots": 1,
+      "topologies": 16
+    },
+    {
+      "q": 2,
+      "slots": 2,
+      "topologies": 400
+    },
+    {
+      "q": 3,
+      "slots": 0,
+      "topologies": 1
+    },
+    {
+      "q": 3,
+      "slots": 1,
+      "topologies": 16
+    },
+    {
+      "q": 3,
+      "slots": 2,
+      "topologies": 400
+    },
+    {
+      "q": 4,
+      "slots": 0,
+      "topologies": 1
+    },
+    {
+      "q": 4,
+      "slots": 1,
+      "topologies": 16
+    },
+    {
+      "q": 4,
+      "slots": 2,
+      "topologies": 400
+    },
+    {
+      "q": 5,
+      "slots": 0,
+      "topologies": 1
+    },
+    {
+      "q": 5,
+      "slots": 1,
+      "topologies": 16
+    },
+    {
+      "q": 5,
+      "slots": 2,
+      "topologies": 400
+    }
+  ],
+  "sampleRows": [
+    {
+      "name": "shared-diamond",
+      "q": 3,
+      "slots": 4,
+      "allTypeRanks": 65536,
+      "counts": [
+        "26624",
+        "0",
+        "6144",
+        "0",
+        "0",
+        "6144",
+        "0",
+        "26624"
+      ]
+    },
+    {
+      "name": "three-row-reconvergence",
+      "q": 3,
+      "slots": 4,
+      "allTypeRanks": 65536,
+      "counts": [
+        "16384",
+        "4096",
+        "6144",
+        "6144",
+        "6144",
+        "6144",
+        "4096",
+        "16384"
+      ]
+    },
+    {
+      "name": "four-row-nonlinearity",
+      "q": 4,
+      "slots": 1,
+      "allTypeRanks": 16,
+      "counts": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "name": "five-row-joint",
+      "q": 5,
+      "slots": 4,
+      "allTypeRanks": 65536,
+      "counts": [
+        "13520",
+        "0",
+        "2864",
+        "0",
+        "2864",
+        "0",
+        "1232",
+        "0",
+        "2864",
+        "0",
+        "3280",
+        "0",
+        "3280",
+        "0",
+        "2864",
+        "0",
+        "0",
+        "2864",
+        "0",
+        "3280",
+        "0",
+        "3280",
+        "0",
+        "2864",
+        "0",
+        "1232",
+        "0",
+        "2864",
+        "0",
+        "2864",
+        "0",
+        "13520"
+      ]
+    }
+  ],
+  "affineRoundTrips": 131072,
+  "prefixChecks": 34952,
+  "widths": [
+    {
+      "w": 1,
+      "slots": 1,
+      "frontierWidth": 1,
+      "cutStates": 2,
+      "memoStates": 1,
+      "count": "4"
+    },
+    {
+      "w": 2,
+      "slots": 3,
+      "frontierWidth": 2,
+      "cutStates": 4,
+      "memoStates": 7,
+      "count": "768"
+    },
+    {
+      "w": 4,
+      "slots": 7,
+      "frontierWidth": 4,
+      "cutStates": 16,
+      "memoStates": 43,
+      "count": "45088768"
+    },
+    {
+      "w": 8,
+      "slots": 15,
+      "frontierWidth": 8,
+      "cutStates": 256,
+      "memoStates": 763,
+      "count": "192159448163155968"
+    },
+    {
+      "w": 12,
+      "slots": 23,
+      "frontierWidth": 12,
+      "cutStates": 4096,
+      "memoStates": 12283,
+      "count": "825293457906221909717024768"
+    }
+  ],
+  "fourRow": {
+    "full": [
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1",
+      "1"
+    ],
+    "affine": [
+      "1",
+      "0",
+      "0",
+      "1",
+      "0",
+      "1",
+      "1",
+      "0",
+      "0",
+      "1",
+      "1",
+      "0",
+      "1",
+      "0",
+      "0",
+      "1"
+    ],
+    "marginalChecks": 15,
+    "ANDtarget": 8
+  },
+  "boundaryChecks": 33,
+  "invalidRanks": 2,
+  "scope": "exact finite reductions; published #NFA FPRAS not implemented; no P/NP resolution",
+  "colored": {
+    "nfaCases": 3249,
+    "nfaWordChecks": 12966,
+    "coloredLabelChecks": 6492,
+    "ambiguousCases": 146,
+    "rows": [
+      {
+        "name": "shared-diamond",
+        "initial": [
+          0,
+          7,
+          2
+        ],
+        "topo": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        "rows": [
+          {
+            "color": 1,
+            "nfaStates": 280,
+            "nfaEdges": 530,
+            "acceptedWords": "3",
+            "acceptingRuns": "4",
+            "weightSum": "6",
+            "countPerOrientation": "6144"
+          },
+          {
+            "color": 2,
+            "nfaStates": 280,
+            "nfaEdges": 530,
+            "acceptedWords": "0",
+            "acceptingRuns": "0",
+            "weightSum": "0",
+            "countPerOrientation": "0"
+          },
+          {
+            "color": 3,
+            "nfaStates": 280,
+            "nfaEdges": 530,
+            "acceptedWords": "0",
+            "acceptingRuns": "0",
+            "weightSum": "0",
+            "countPerOrientation": "0"
+          }
+        ]
+      },
+      {
+        "name": "three-row-reconvergence",
+        "initial": [
+          0,
+          7,
+          2,
+          4
+        ],
+        "topo": [
+          [
+            2,
+            3
+          ],
+          [
+            4,
+            2
+          ],
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            6
+          ]
+        ],
+        "rows": [
+          {
+            "color": 1,
+            "nfaStates": 360,
+            "nfaEdges": 728,
+            "acceptedWords": "5",
+            "acceptingRuns": "8",
+            "weightSum": "6",
+            "countPerOrientation": "6144"
+          },
+          {
+            "color": 2,
+            "nfaStates": 360,
+            "nfaEdges": 728,
+            "acceptedWords": "5",
+            "acceptingRuns": "8",
+            "weightSum": "6",
+            "countPerOrientation": "6144"
+          },
+          {
+            "color": 3,
+            "nfaStates": 360,
+            "nfaEdges": 728,
+            "acceptedWords": "4",
+            "acceptingRuns": "14",
+            "weightSum": "4",
+            "countPerOrientation": "4096"
+          }
+        ]
+      },
+      {
+        "name": "repeated-conflicting-rows",
+        "initial": [
+          0,
+          7,
+          0
+        ],
+        "topo": [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        "rows": [
+          {
+            "color": 1,
+            "nfaStates": 90,
+            "nfaEdges": 144,
+            "acceptedWords": "0",
+            "acceptingRuns": "0",
+            "weightSum": "0",
+            "countPerOrientation": "0"
+          },
+          {
+            "color": 2,
+            "nfaStates": 90,
+            "nfaEdges": 144,
+            "acceptedWords": "0",
+            "acceptingRuns": "0",
+            "weightSum": "0",
+            "countPerOrientation": "0"
+          },
+          {
+            "color": 3,
+            "nfaStates": 90,
+            "nfaEdges": 144,
+            "acceptedWords": "0",
+            "acceptingRuns": "0",
+            "weightSum": "0",
+            "countPerOrientation": "0"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-0",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            0,
+            1
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 24,
+            "nfaEdges": 42,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "2"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-1",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            1,
+            1
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 60,
+            "nfaEdges": 112,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "16"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-2",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 120,
+            "nfaEdges": 230,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "128"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-3",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 210,
+            "nfaEdges": 408,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "1024"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-4",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            0,
+            5
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 336,
+            "nfaEdges": 658,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "8192"
+          }
+        ]
+      },
+      {
+        "name": "rare-chain-5",
+        "initial": [
+          1,
+          4
+        ],
+        "topo": [
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            0,
+            6
+          ]
+        ],
+        "rows": [
+          {
+            "color": 2,
+            "nfaStates": 504,
+            "nfaEdges": 992,
+            "acceptedWords": "1",
+            "acceptingRuns": "1",
+            "weightSum": "1",
+            "countPerOrientation": "65536"
+          }
+        ]
+      }
+    ]
+  }
+}

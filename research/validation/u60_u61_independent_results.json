@@ -1,0 +1,285 @@
+{
+  "status": "pass",
+  "localAffineRankCases": 84,
+  "literalTypeAssignments": 196880,
+  "sitePathWordChecks": 234,
+  "rawRows": [
+    {
+      "name": "shared-diamond",
+      "counts": [
+        "26624",
+        "0",
+        "6144",
+        "0",
+        "0",
+        "6144",
+        "0",
+        "26624"
+      ]
+    },
+    {
+      "name": "three-row-reconvergence",
+      "counts": [
+        "16384",
+        "4096",
+        "6144",
+        "6144",
+        "6144",
+        "6144",
+        "4096",
+        "16384"
+      ]
+    },
+    {
+      "name": "four-row-nonlinearity",
+      "counts": [
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "name": "five-row-joint",
+      "counts": [
+        "13520",
+        "0",
+        "2864",
+        "0",
+        "2864",
+        "0",
+        "1232",
+        "0",
+        "2864",
+        "0",
+        "3280",
+        "0",
+        "3280",
+        "0",
+        "2864",
+        "0",
+        "0",
+        "2864",
+        "0",
+        "3280",
+        "0",
+        "3280",
+        "0",
+        "2864",
+        "0",
+        "1232",
+        "0",
+        "2864",
+        "0",
+        "2864",
+        "0",
+        "13520"
+      ]
+    },
+    {
+      "name": "repeated-conflicting-rows",
+      "counts": [
+        "128",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "128"
+      ]
+    }
+  ],
+  "coloredRows": [
+    {
+      "name": "shared-diamond",
+      "color": 1,
+      "acceptedWords": "3",
+      "weightSum": "6",
+      "countPerOrientation": "6144"
+    },
+    {
+      "name": "shared-diamond",
+      "color": 2,
+      "acceptedWords": "0",
+      "weightSum": "0",
+      "countPerOrientation": "0"
+    },
+    {
+      "name": "shared-diamond",
+      "color": 3,
+      "acceptedWords": "0",
+      "weightSum": "0",
+      "countPerOrientation": "0"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 1,
+      "acceptedWords": "5",
+      "weightSum": "6",
+      "countPerOrientation": "6144"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 2,
+      "acceptedWords": "5",
+      "weightSum": "6",
+      "countPerOrientation": "6144"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 3,
+      "acceptedWords": "4",
+      "weightSum": "4",
+      "countPerOrientation": "4096"
+    },
+    {
+      "name": "repeated-conflicting-rows",
+      "color": 1,
+      "acceptedWords": "0",
+      "weightSum": "0",
+      "countPerOrientation": "0"
+    },
+    {
+      "name": "repeated-conflicting-rows",
+      "color": 2,
+      "acceptedWords": "0",
+      "weightSum": "0",
+      "countPerOrientation": "0"
+    },
+    {
+      "name": "repeated-conflicting-rows",
+      "color": 3,
+      "acceptedWords": "0",
+      "weightSum": "0",
+      "countPerOrientation": "0"
+    },
+    {
+      "name": "rare-chain-0",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "2"
+    },
+    {
+      "name": "rare-chain-1",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "16"
+    },
+    {
+      "name": "rare-chain-2",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "128"
+    },
+    {
+      "name": "rare-chain-3",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "1024"
+    },
+    {
+      "name": "rare-chain-4",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "8192"
+    },
+    {
+      "name": "rare-chain-5",
+      "color": 2,
+      "acceptedWords": "1",
+      "weightSum": "1",
+      "countPerOrientation": "65536"
+    }
+  ],
+  "rationalPrefixCases": [
+    {
+      "name": "shared-diamond",
+      "color": 1,
+      "tv": "5117/9434112",
+      "exactMean": "2",
+      "perturbedMean": "2"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 1,
+      "tv": "45028/78602245",
+      "exactMean": "6/5",
+      "perturbedMean": "6292481/5241856"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 2,
+      "tv": "45028/78602245",
+      "exactMean": "6/5",
+      "perturbedMean": "6292481/5241856"
+    },
+    {
+      "name": "three-row-reconvergence",
+      "color": 3,
+      "tv": "7163/12572674",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-0",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-1",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-2",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-3",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-4",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    },
+    {
+      "name": "rare-chain-5",
+      "color": 2,
+      "tv": "0",
+      "exactMean": "1",
+      "perturbedMean": "1"
+    }
+  ],
+  "scope": "independent finite implementations; source #NFA FPRAS not implemented"
+}

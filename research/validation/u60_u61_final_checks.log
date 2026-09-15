@@ -1,0 +1,15 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u60-u61 code/u60_u61_audit.ts
++ node --check research/validation/build-u60-u61/u60_u61_audit.js
++ node research/validation/build-u60-u61/u60_u61_audit.js
++ cmp research/validation/u60_u61_results.json research/validation/u60_u61_repeat.json
++ python -m py_compile code/u60_u61_independent.py
++ python code/u60_u61_independent.py
++ cmp research/validation/u60_u61_independent_results.json research/validation/u60_u61_independent_repeat.json
++ printf 'PASS: strict compiler, syntax, both exact audits, and byte-identical reproductions\n'
+PASS: strict compiler, syntax, both exact audits, and byte-identical reproductions

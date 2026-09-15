@@ -1,0 +1,8 @@
+Node:
+v22.16.0
+TypeScript:
+Version 5.8.3
+PASS strict TypeScript and no-unused checks
+PASS compiled syntax
+PASS final synthesis, polynomial, interpolation and seven-point tests
+PASS deterministic byte-for-byte repeat

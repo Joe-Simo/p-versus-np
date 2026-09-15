@@ -1,0 +1,3 @@
+PASS strict TypeScript and no-unused checks
+PASS compiled JavaScript syntax
+PASS exhaustive circuits, certificates, and universal-linear-identity audits

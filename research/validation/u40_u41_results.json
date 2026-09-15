@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "scope": "Finite exhaustive audits only; asymptotic arguments are in U40 and U41.",
+  "arithmetic": "Exact bounded integer graph arithmetic; arbitrary-precision bigint truth tables and inequalities.",
+  "kernels": {
+    "graphCount": 33868,
+    "caseCount": 235881,
+    "rows": [
+      {
+        "n": 0,
+        "graphs": 1,
+        "cases": 1,
+        "forcedRejects": 0,
+        "edgeRejects": 0,
+        "retained": 1,
+        "maximumQueries": 0
+      },
+      {
+        "n": 1,
+        "graphs": 1,
+        "cases": 2,
+        "forcedRejects": 0,
+        "edgeRejects": 0,
+        "retained": 2,
+        "maximumQueries": 0
+      },
+      {
+        "n": 2,
+        "graphs": 2,
+        "cases": 6,
+        "forcedRejects": 1,
+        "edgeRejects": 0,
+        "retained": 5,
+        "maximumQueries": 3
+      },
+      {
+        "n": 3,
+        "graphs": 8,
+        "cases": 32,
+        "forcedRejects": 8,
+        "edgeRejects": 0,
+        "retained": 24,
+        "maximumQueries": 9
+      },
+      {
+        "n": 4,
+        "graphs": 64,
+        "cases": 320,
+        "forcedRejects": 102,
+        "edgeRejects": 3,
+        "retained": 215,
+        "maximumQueries": 18
+      },
+      {
+        "n": 5,
+        "graphs": 1024,
+        "cases": 6144,
+        "forcedRejects": 2168,
+        "edgeRejects": 117,
+        "retained": 3859,
+        "maximumQueries": 30
+      },
+      {
+        "n": 6,
+        "graphs": 32768,
+        "cases": 229376,
+        "forcedRejects": 86300,
+        "edgeRejects": 7567,
+        "retained": 135509,
+        "maximumQueries": 45
+      }
+    ]
+  },
+  "parityCNFs": {
+    "checkedSets": 65814,
+    "rows": [
+      {
+        "q": 1,
+        "subsetsChecked": 2,
+        "maximumByWidth": [
+          1
+        ],
+        "definableCountsByWidth": [
+          2
+        ]
+      },
+      {
+        "q": 2,
+        "subsetsChecked": 4,
+        "maximumByWidth": [
+          1,
+          2
+        ],
+        "definableCountsByWidth": [
+          3,
+          4
+        ]
+      },
+      {
+        "q": 3,
+        "subsetsChecked": 16,
+        "maximumByWidth": [
+          1,
+          2,
+          4
+        ],
+        "definableCountsByWidth": [
+          5,
+          11,
+          16
+        ]
+      },
+      {
+        "q": 4,
+        "subsetsChecked": 256,
+        "maximumByWidth": [
+          1,
+          4,
+          6,
+          8
+        ],
+        "definableCountsByWidth": [
+          9,
+          67,
+          183,
+          256
+        ]
+      },
+      {
+        "q": 5,
+        "subsetsChecked": 65536,
+        "maximumByWidth": [
+          1,
+          4,
+          8,
+          12,
+          16
+        ],
+        "definableCountsByWidth": [
+          17,
+          437,
+          13241,
+          45707,
+          65536
+        ]
+      }
+    ]
+  }
+}

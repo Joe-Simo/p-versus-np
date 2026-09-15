@@ -1,0 +1,16 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ test '!' -e package.json
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u52-u53 code/u52_u53_audit.ts
++ node --check research/validation/build-u52-u53/u52_u53_audit.js
++ node research/validation/build-u52-u53/u52_u53_audit.js
++ cmp research/validation/u52_u53_results.json research/validation/u52_u53_rerun.json
++ python -m py_compile code/u52_u53_independent.py
++ python code/u52_u53_independent.py
++ cmp research/validation/u52_u53_independent_results.json research/validation/u52_u53_independent_rerun.json
++ set +x
+PASS strict/no-unused TypeScript, compiled syntax, exhaustive count/sampler assertions, independent raw-prefix comparison, and byte-identical reruns.

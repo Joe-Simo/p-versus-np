@@ -1,0 +1,370 @@
+{
+  "status": "pass",
+  "arithmetic": "bigint exhaustive bit-slicing; bounded integer truth-table oracle",
+  "gather": {
+    "assignments": 167276,
+    "rows": [
+      {
+        "n": 0,
+        "N": 1,
+        "t": 0,
+        "inputBits": 1,
+        "assignments": 2,
+        "comparisons": 0,
+        "binaryGates": 0,
+        "status": "pass"
+      },
+      {
+        "n": 0,
+        "N": 1,
+        "t": 3,
+        "inputBits": 1,
+        "assignments": 2,
+        "comparisons": 12,
+        "binaryGates": 492,
+        "status": "pass"
+      },
+      {
+        "n": 1,
+        "N": 2,
+        "t": 1,
+        "inputBits": 3,
+        "assignments": 8,
+        "comparisons": 12,
+        "binaryGates": 408,
+        "status": "pass"
+      },
+      {
+        "n": 1,
+        "N": 2,
+        "t": 3,
+        "inputBits": 5,
+        "assignments": 32,
+        "comparisons": 48,
+        "binaryGates": 2280,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "t": 1,
+        "inputBits": 6,
+        "assignments": 64,
+        "comparisons": 48,
+        "binaryGates": 1944,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "t": 2,
+        "inputBits": 8,
+        "assignments": 256,
+        "comparisons": 48,
+        "binaryGates": 2280,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "t": 3,
+        "inputBits": 10,
+        "assignments": 1024,
+        "comparisons": 48,
+        "binaryGates": 2616,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "t": 5,
+        "inputBits": 14,
+        "assignments": 16384,
+        "comparisons": 160,
+        "binaryGates": 9808,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "t": 1,
+        "inputBits": 11,
+        "assignments": 2048,
+        "comparisons": 160,
+        "binaryGates": 7568,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "t": 2,
+        "inputBits": 14,
+        "assignments": 16384,
+        "comparisons": 160,
+        "binaryGates": 8688,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "t": 3,
+        "inputBits": 17,
+        "assignments": 131072,
+        "comparisons": 160,
+        "binaryGates": 9808,
+        "status": "pass"
+      }
+    ]
+  },
+  "lowDegree": {
+    "uniqueFunctionDegreePairs": 262948,
+    "twoCircuitEvaluations": 525896,
+    "nonmemberPairs": 227940,
+    "certificateOutputsChecked": 455880,
+    "rows": [
+      {
+        "n": 1,
+        "N": 2,
+        "d": 0,
+        "assignments": 4,
+        "nonmembers": 2,
+        "faceCount": 1,
+        "faceCircuitGates": 6,
+        "fastCircuitGates": 22,
+        "fastGateUpperBound": 42,
+        "minimumCertificate": 2,
+        "nonzeroDualRelations": 1,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "d": 0,
+        "assignments": 16,
+        "nonmembers": 14,
+        "faceCount": 4,
+        "faceCircuitGates": 28,
+        "fastCircuitGates": 70,
+        "fastGateUpperBound": 114,
+        "minimumCertificate": 2,
+        "nonzeroDualRelations": 7,
+        "status": "pass"
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "d": 1,
+        "assignments": 16,
+        "nonmembers": 8,
+        "faceCount": 1,
+        "faceCircuitGates": 11,
+        "fastCircuitGates": 82,
+        "fastGateUpperBound": 114,
+        "minimumCertificate": 4,
+        "nonzeroDualRelations": 1,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "d": 0,
+        "assignments": 256,
+        "nonmembers": 254,
+        "faceCount": 12,
+        "faceCircuitGates": 96,
+        "fastCircuitGates": 178,
+        "fastGateUpperBound": 266,
+        "minimumCertificate": 2,
+        "nonzeroDualRelations": 127,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "d": 1,
+        "assignments": 256,
+        "nonmembers": 240,
+        "faceCount": 6,
+        "faceCircuitGates": 78,
+        "fastCircuitGates": 196,
+        "fastGateUpperBound": 266,
+        "minimumCertificate": 4,
+        "nonzeroDualRelations": 15,
+        "status": "pass"
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "d": 2,
+        "assignments": 256,
+        "nonmembers": 128,
+        "faceCount": 1,
+        "faceCircuitGates": 23,
+        "fastCircuitGates": 220,
+        "fastGateUpperBound": 266,
+        "minimumCertificate": 8,
+        "nonzeroDualRelations": 1,
+        "status": "pass"
+      },
+      {
+        "n": 4,
+        "N": 16,
+        "d": 0,
+        "assignments": 65536,
+        "nonmembers": 65534,
+        "faceCount": 32,
+        "faceCircuitGates": 288,
+        "fastCircuitGates": 422,
+        "fastGateUpperBound": 588,
+        "minimumCertificate": 2,
+        "nonzeroDualRelations": 32767,
+        "status": "pass"
+      },
+      {
+        "n": 4,
+        "N": 16,
+        "d": 1,
+        "assignments": 65536,
+        "nonmembers": 65504,
+        "faceCount": 24,
+        "faceCircuitGates": 360,
+        "fastCircuitGates": 446,
+        "fastGateUpperBound": 588,
+        "minimumCertificate": 4,
+        "nonzeroDualRelations": 2047,
+        "status": "pass"
+      },
+      {
+        "n": 4,
+        "N": 16,
+        "d": 2,
+        "assignments": 65536,
+        "nonmembers": 63488,
+        "faceCount": 8,
+        "faceCircuitGates": 216,
+        "fastCircuitGates": 478,
+        "fastGateUpperBound": 588,
+        "minimumCertificate": 8,
+        "nonzeroDualRelations": 31,
+        "status": "pass"
+      },
+      {
+        "n": 4,
+        "N": 16,
+        "d": 3,
+        "assignments": 65536,
+        "nonmembers": 32768,
+        "faceCount": 1,
+        "faceCircuitGates": 51,
+        "fastCircuitGates": 526,
+        "fastGateUpperBound": 588,
+        "minimumCertificate": 16,
+        "nonzeroDualRelations": 1,
+        "status": "pass"
+      }
+    ],
+    "constructionOnly": [
+      {
+        "n": 6,
+        "N": 64,
+        "d": 3,
+        "binaryGates": 2346,
+        "outputs": 97,
+        "gateUpperBound": 2782,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 6,
+        "N": 64,
+        "d": 5,
+        "binaryGates": 2682,
+        "outputs": 385,
+        "gateUpperBound": 2782,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 8,
+        "N": 256,
+        "d": 4,
+        "binaryGates": 11142,
+        "outputs": 257,
+        "gateUpperBound": 13176,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 8,
+        "N": 256,
+        "d": 7,
+        "binaryGates": 13030,
+        "outputs": 2049,
+        "gateUpperBound": 13176,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 10,
+        "N": 1024,
+        "d": 5,
+        "binaryGates": 52050,
+        "outputs": 641,
+        "gateUpperBound": 62010,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 10,
+        "N": 1024,
+        "d": 9,
+        "binaryGates": 61810,
+        "outputs": 10241,
+        "gateUpperBound": 62010,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 12,
+        "N": 4096,
+        "d": 6,
+        "binaryGates": 239406,
+        "outputs": 1537,
+        "gateUpperBound": 287524,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      },
+      {
+        "n": 12,
+        "N": 4096,
+        "d": 11,
+        "binaryGates": 287262,
+        "outputs": 49153,
+        "gateUpperBound": 287524,
+        "semanticTest": "not exhaustive at this size; topology and count only"
+      }
+    ]
+  },
+  "generalCircuitLinearIdentity": {
+    "coefficientVectors": 65808,
+    "rows": [
+      {
+        "n": 1,
+        "N": 2,
+        "nonzeroCoefficientVectors": 3,
+        "annihilatorsFound": 0
+      },
+      {
+        "n": 2,
+        "N": 4,
+        "nonzeroCoefficientVectors": 15,
+        "annihilatorsFound": 0
+      },
+      {
+        "n": 3,
+        "N": 8,
+        "nonzeroCoefficientVectors": 255,
+        "annihilatorsFound": 0
+      },
+      {
+        "n": 4,
+        "N": 16,
+        "nonzeroCoefficientVectors": 65535,
+        "annihilatorsFound": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u50-u51 code/u50_u51_audit.ts
++ node --check research/validation/build-u50-u51/u50_u51_audit.js
++ node research/validation/build-u50-u51/u50_u51_audit.js
++ cmp research/validation/u50_u51_final_results.json research/validation/u50_u51_confirmed_results.json
++ python -m py_compile code/u50_u51_independent.py
++ python code/u50_u51_independent.py
++ cmp research/validation/u50_u51_python_results.json research/validation/u50_u51_confirmed_python.json
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/regression-u49 code/u48_u49_audit.ts
++ node research/validation/regression-u49/u48_u49_audit.js
++ cmp research/validation/u48_u49_results.json research/validation/u49_regression_after_u51.json
++ echo 'PASS: strict/no-unused type checks, JS syntax, exact U50-U51 runs and independent reruns; U49 output byte-identical.'
+PASS: strict/no-unused type checks, JS syntax, exact U50-U51 runs and independent reruns; U49 output byte-identical.

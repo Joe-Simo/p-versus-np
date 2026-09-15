@@ -1,0 +1,13 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u58-u59 code/u58_u59_audit.ts
++ node --check research/validation/build-u58-u59/u58_u59_audit.js
++ node research/validation/build-u58-u59/u58_u59_audit.js
++ cmp research/validation/u58_u59_final_results.json research/validation/u58_u59_reproduced.json
++ python -m py_compile code/u58_u59_independent.py
++ python code/u58_u59_independent.py
++ cmp research/validation/u58_u59_independent_results.json research/validation/u58_u59_independent_reproduced.json

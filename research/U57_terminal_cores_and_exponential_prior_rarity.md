@@ -17,7 +17,7 @@ It does not claim every intermediate state is like this. Nor does it assume that
 
 ## 2. Proof by an explicitly charged correction circuit
 
-If g fits Y, then g(x) must differ from b; otherwise g also fits the extended labels. Let
+Suppose, toward a contradiction, that g fits Y and has a circuit of at most s-d gates (this is impossible already if s-d<0). Then g(x) must differ from b; otherwise this size-at-most-s circuit also fits the extended labels. Let
 
     delta_(x,J)(z) = product_(i in J) [z_i=x_i].
 
@@ -25,7 +25,7 @@ This function is one at x and zero at every previously labeled point. Thus g'=g 
 
 For d>=2, the delta function uses d-1 B2 gates: the first gate conjoins two appropriately signed literals, and every following gate conjoins one more literal with its sign absorbed into its truth table. One final XOR gate gives a total of d added gates. For d=1, XOR or XNOR with the single input bit implements the correction directly in one gate. Negated input wires are NOT assumed free.
 
-If g had a circuit of at most s-d gates, the corrected circuit would have at most s gates, contradicting the premise. This proves the complexity cutoff. Removing unused slots from any fitting raw description leaves a circuit with exactly its live-gate count, giving the liveness assertion. Shared subgraphs are neither duplicated nor charged as formulas. QED.
+The corrected circuit has at most s gates, contradicting the premise. This proves the complexity cutoff. Removing unused slots from any fitting raw description leaves a circuit with exactly its live-gate count, giving the liveness assertion. Shared subgraphs are neither duplicated nor charged as formulas. QED.
 
 ## 3. Exact consequences for the U56 sum
 

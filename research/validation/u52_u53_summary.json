@@ -1,0 +1,347 @@
+{
+  "status": "pass",
+  "model": "exact ordered B2 gate lists with repeated predecessors and output index",
+  "partialCases": 6561,
+  "samplerRows": [
+    {
+      "n": 2,
+      "s": 1,
+      "target": 6,
+      "descriptions": "2",
+      "bijection": "all ranks match distinct raw descriptions",
+      "memoStates": 17
+    },
+    {
+      "n": 3,
+      "s": 2,
+      "target": 150,
+      "descriptions": "24",
+      "bijection": "all ranks match distinct raw descriptions",
+      "memoStates": 1080
+    },
+    {
+      "n": 3,
+      "s": 3,
+      "target": 150,
+      "descriptions": "49536",
+      "bijection": "all ranks match distinct raw descriptions",
+      "memoStates": 27964
+    }
+  ],
+  "repeatedContradictoryCounts": [
+    "409600",
+    "0",
+    "0",
+    "204800"
+  ],
+  "multiplicityRows": [
+    {
+      "cols": [
+        0,
+        0,
+        1,
+        2,
+        3
+      ],
+      "counts": [
+        "936",
+        "464",
+        "464",
+        "536"
+      ]
+    },
+    {
+      "cols": [
+        0,
+        1,
+        1,
+        2,
+        3
+      ],
+      "counts": [
+        "516",
+        "884",
+        "484",
+        "516"
+      ]
+    },
+    {
+      "cols": [
+        0,
+        1,
+        2,
+        2,
+        3
+      ],
+      "counts": [
+        "516",
+        "484",
+        "884",
+        "516"
+      ]
+    },
+    {
+      "cols": [
+        0,
+        1,
+        2,
+        3,
+        3
+      ],
+      "counts": [
+        "536",
+        "464",
+        "464",
+        "936"
+      ]
+    }
+  ],
+  "multiplicityWitness": {
+    "a": [
+      0,
+      1,
+      2,
+      2,
+      3
+    ],
+    "b": [
+      0,
+      1,
+      2,
+      3,
+      3
+    ],
+    "y": 1,
+    "aCount": "484",
+    "bCount": "464"
+  },
+  "explosionRows": [
+    {
+      "q": 1,
+      "D": 2,
+      "bootstrapGates": 0,
+      "copyingGates": 2,
+      "totalBudget": 2,
+      "states": 3,
+      "predicted": "3",
+      "layers": [
+        1,
+        2,
+        3
+      ],
+      "rawCopyGateLists": "144",
+      "outputCounts": [
+        "240",
+        "480"
+      ],
+      "closedFormPass": true
+    },
+    {
+      "q": 2,
+      "D": 4,
+      "bootstrapGates": 0,
+      "copyingGates": 4,
+      "totalBudget": 4,
+      "states": 35,
+      "predicted": "35",
+      "layers": [
+        1,
+        4,
+        10,
+        20,
+        35
+      ],
+      "rawCopyGateLists": "705600",
+      "outputCounts": [
+        "1411200",
+        "1411200",
+        "1411200",
+        "1411200"
+      ],
+      "closedFormPass": true
+    },
+    {
+      "q": 3,
+      "D": 8,
+      "bootstrapGates": 3,
+      "copyingGates": 8,
+      "totalBudget": 11,
+      "states": 6435,
+      "predicted": "6435",
+      "layers": [
+        1,
+        8,
+        36,
+        120,
+        330,
+        792,
+        1716,
+        3432,
+        6435
+      ],
+      "rawCopyGateLists": "67319076464640000",
+      "outputCounts": [
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000",
+        "134638152929280000"
+      ],
+      "closedFormPass": true
+    }
+  ],
+  "refinement": {
+    "oldHistogram": [
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "newAND": [
+      0,
+      0,
+      0,
+      2,
+      3
+    ],
+    "newOR": [
+      0,
+      0,
+      2,
+      2,
+      3
+    ],
+    "targetColumn": 2,
+    "terminalCounts": [
+      "1",
+      "2"
+    ]
+  },
+  "wolframComparison": [
+    "167296",
+    "139904",
+    "139904",
+    "167296"
+  ],
+  "copySamplerRows": [
+    {
+      "initial": [
+        0,
+        1
+      ],
+      "r": 3,
+      "y": 0,
+      "descriptions": "1440",
+      "probabilityOfEach": "1/1440"
+    },
+    {
+      "initial": [
+        0,
+        0,
+        1
+      ],
+      "r": 2,
+      "y": 0,
+      "descriptions": "480",
+      "probabilityOfEach": "1/480"
+    },
+    {
+      "initial": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "r": 2,
+      "y": 0,
+      "descriptions": "600",
+      "probabilityOfEach": "1/600"
+    },
+    {
+      "initial": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "r": 2,
+      "y": 0,
+      "descriptions": "1200",
+      "probabilityOfEach": "1/1200"
+    },
+    {
+      "initial": [
+        0,
+        0
+      ],
+      "r": 2,
+      "y": 0,
+      "descriptions": "144",
+      "probabilityOfEach": "1/144"
+    },
+    {
+      "initial": [
+        0,
+        1
+      ],
+      "r": 0,
+      "y": 0,
+      "descriptions": "1",
+      "probabilityOfEach": "1/1"
+    }
+  ],
+  "fullRows": [
+    {
+      "n": 2,
+      "s": 1,
+      "layers": [
+        1,
+        16
+      ],
+      "arcs": 16,
+      "rawPrefixes": 256,
+      "rawDescriptionCount": "1280",
+      "positiveFunctionCounts": 16
+    },
+    {
+      "n": 3,
+      "s": 2,
+      "layers": [
+        1,
+        38,
+        1041
+      ],
+      "arcs": 1782,
+      "rawPrefixes": 230400,
+      "rawDescriptionCount": "1612800",
+      "positiveFunctionCounts": 152
+    },
+    {
+      "n": 3,
+      "s": 3,
+      "layers": [
+        1,
+        38,
+        1041,
+        26884
+      ],
+      "arcs": 59694,
+      "rawPrefixes": 230400,
+      "rawDescriptionCount": "1445068800",
+      "positiveFunctionCounts": 232
+    }
+  ],
+  "boundaryCaseCount": 104,
+  "samplerOutcomeCount": 49562,
+  "copySamplerOutcomeCount": 3865,
+  "priorArchivePreservation": {
+    "archiveMembers": 88,
+    "distinctPaths": 83,
+    "allUnchanged": true
+  },
+  "resultSHA256": "4f9f0a6304a22944c8a64b71ccd2ee3dc734e61cd85489b3467d76fe0ac82585"
+}

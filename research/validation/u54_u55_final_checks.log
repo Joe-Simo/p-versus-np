@@ -1,0 +1,18 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u54-u55 code/u54_u55_audit.ts
++ node --check research/validation/build-u54-u55/u54_u55_audit.js
++ node research/validation/build-u54-u55/u54_u55_audit.js
++ cmp research/validation/u54_u55_final_results.json research/validation/u54_u55_reproduced.json
++ python -m py_compile code/u54_u55_independent.py
++ python code/u54_u55_independent.py
++ cmp research/validation/u54_u55_independent_final.json research/validation/u54_u55_independent_reproduced.json
++ tsc --noEmitOnError --strict --noUncheckedIndexedAccess --noUnusedLocals --noUnusedParameters --target ES2022 --module commonjs --outDir research/validation/build-u53-regression code/u52_u53_audit.ts
++ node research/validation/build-u53-regression/u52_u53_audit.js
++ cmp research/validation/u52_u53_results.json research/validation/u53_regression.json
++ echo 'PASS strict compiler/no-unused, syntax, exact new checks and reproduction; prior U52-U53 result unchanged.'
+PASS strict compiler/no-unused, syntax, exact new checks and reproduction; prior U52-U53 result unchanged.

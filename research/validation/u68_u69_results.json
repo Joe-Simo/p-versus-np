@@ -1,0 +1,31 @@
+{
+  "status":"pass",
+  "walshChecks":4096,
+  "pairingChecks":256,
+  "balancedChecks":1536,
+  "balancedRows":[
+    {"target":3,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}},
+    {"target":5,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}},
+    {"target":6,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}},
+    {"target":9,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}},
+    {"target":10,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}},
+    {"target":12,"favorableParentPairs":84,"gateMultiplicityHistogram":{"1":24,"2":48,"4":12}}
+  ],
+  "favorableLanguage":{
+    "restrictedWords":87380,
+    "equalityRows":[
+      {"m":1,"words":4,"accepted":2,"nfaLowerBound":2,"prefixGates":4},
+      {"m":2,"words":16,"accepted":4,"nfaLowerBound":4,"prefixGates":8},
+      {"m":3,"words":64,"accepted":8,"nfaLowerBound":8,"prefixGates":12},
+      {"m":4,"words":256,"accepted":16,"nfaLowerBound":16,"prefixGates":16},
+      {"m":5,"words":1024,"accepted":32,"nfaLowerBound":32,"prefixGates":20},
+      {"m":6,"words":4096,"accepted":64,"nfaLowerBound":64,"prefixGates":24},
+      {"m":7,"words":16384,"accepted":128,"nfaLowerBound":128,"prefixGates":28},
+      {"m":8,"words":65536,"accepted":256,"nfaLowerBound":256,"prefixGates":32}
+    ],
+    "minTransformFavorable":2,
+    "maxTransformFavorable":8,
+    "transformHistogram":{"2":4,"4":8,"8":4},
+    "expectedRejectionProposalsAtMost":8
+  }
+}

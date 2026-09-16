@@ -1,0 +1,15 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ strict TypeScript compile
++ node --check
++ main fresh run
++ main byte compare
+main-byte-identical
++ python compile
++ independent fresh run
++ independent byte compare
+independent-byte-identical

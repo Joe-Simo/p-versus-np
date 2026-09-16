@@ -1,0 +1,18 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ strict tsc
++ node --check
++ node fresh run
++ cmp main
++ python -m py_compile
++ python independent fresh
++ cmp independent
++ sha256
+045b149dea80bbbb35be186481ab73ed1034ffb9081d29875f8810e9f52091d3  research/validation/u64_u65_results.json
+724624b39e558846117b0fdd35519560b86739d1db8f87763db81d407c651da5  research/validation/u64_u65_independent_results.json
+43617f6aeec212f537cfcdcf9eebaf711980415eb967096738a15f86763e19b2  code/u64_u65_audit.ts
+e3b7cee628e656c4d7781db2a17790bb68d7aba3674ec13ade63f3c85ec297c4  code/u64_u65_independent.py

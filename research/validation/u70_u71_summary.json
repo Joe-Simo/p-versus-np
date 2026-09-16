@@ -1,0 +1,14 @@
+{
+  "status": "pass",
+  "local_affine_checks": 16384,
+  "route_only_counterexample": {"selected_column": 1, "requirements": [[0,1],[0,3]], "side_0_count": 8, "side_2_count": 4},
+  "probe_determinant": "2097152",
+  "probe_min_weight": 4,
+  "probe_max_expected_rejection_proposals": 4,
+  "typescript_witness_words": 74000,
+  "typescript_favorable_words": 21440,
+  "typescript_max_witness": "1024",
+  "main_result_sha256": "ebb980236f4564333dc7df4814f436db36606a5e0570066f9ba69c6227828db9",
+  "independent_result_sha256": "059fb0ee0df37e739e8ac7171eed7b9b9da3f4aa93b6f48702ab90b0fddc54a2",
+  "scope": "Exact path-certificate classification and overlap-count theorem only; no approximation hardness or P-versus-NP resolution"
+}

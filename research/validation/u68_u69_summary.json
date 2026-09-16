@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "walshChecks": 4096,
+  "pairingChecks": 256,
+  "balancedChecks": 1536,
+  "balancedMultiplicityHistogram": {"1": 24, "2": 48, "4": 12},
+  "balancedFavorableParentPairsPerTarget": 84,
+  "cancellationEndpoint": {"m": 12, "targetProbability": "1/8192"},
+  "favorableLanguage": {
+    "restrictedWordsChecked": 87380,
+    "maxCheckedM": 8,
+    "minimumTransformFavorableTypes": 2,
+    "transformHistogram": {"2": 4, "4": 8, "8": 4},
+    "expectedRejectionProposalsAtMost": 8
+  },
+  "mainResultSha256": "919700afc642fc2743d03d656eab8d38b36e94ccd72979df2861cebc48c9a57e",
+  "independentResultSha256": "5b64beff723b9a8a2654f9440e4b175e7146f9b25fb94c830b0c8308de6b412a"
+}

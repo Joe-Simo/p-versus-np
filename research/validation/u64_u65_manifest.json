@@ -1,0 +1,61 @@
+{
+  "status": "pass",
+  "files": {
+    "RESEARCH_PROMPT.txt": {
+      "bytes": 35378,
+      "sha256": "e53dd9e6b9b8e3e6dea67084a3689dce196f60e98bb0af766eab1f093a223127"
+    },
+    "research/checkpoint-2026-09-15-U63.md": {
+      "bytes": 5942,
+      "sha256": "0ee5da94ad63e6873bb4fa25150b4e8787ed09c3f145fcb06c6335608f123f7e"
+    },
+    "research/U64_four_row_topology_feasibility_collapse.md": {
+      "bytes": 8864,
+      "sha256": "9338ccc190f58330bbe01d71028013c443271ec5a8ad2098be7dd41713ef4fc9"
+    },
+    "research/U65_five_row_bottleneck_sharpness.md": {
+      "bytes": 4202,
+      "sha256": "aff2765b277ca794ed8708cce71acff20161c395645452d7d71a4d7291677ff8"
+    },
+    "research/checkpoint-2026-09-16-U65.md": {
+      "bytes": 8703,
+      "sha256": "2324d45fc5ebcde28f18af46d954f45743133cce388a236719c509b3eba72d9a"
+    },
+    "code/u64_u65_audit.ts": {
+      "bytes": 17680,
+      "sha256": "43617f6aeec212f537cfcdcf9eebaf711980415eb967096738a15f86763e19b2"
+    },
+    "code/u64_u65_independent.py": {
+      "bytes": 5432,
+      "sha256": "e3b7cee628e656c4d7781db2a17790bb68d7aba3674ec13ade63f3c85ec297c4"
+    },
+    "code/u64_u65_independent.wl": {
+      "bytes": 2981,
+      "sha256": "a2fff4546a03020d6ab5d6af69e4e78c8dd366c28f516b7f270a6b7548438c2f"
+    },
+    "research/validation/u64_u65_protocol.md": {
+      "bytes": 2074,
+      "sha256": "efcb6fd93351ffa41433e0c2f39abd2149fcb8f4f5f19c560f339cb8fb655c7e"
+    },
+    "research/validation/u64_u65_results.json": {
+      "bytes": 7480,
+      "sha256": "045b149dea80bbbb35be186481ab73ed1034ffb9081d29875f8810e9f52091d3"
+    },
+    "research/validation/u64_u65_independent_results.json": {
+      "bytes": 758,
+      "sha256": "724624b39e558846117b0fdd35519560b86739d1db8f87763db81d407c651da5"
+    },
+    "research/validation/u64_u65_wolfram.md": {
+      "bytes": 1432,
+      "sha256": "aadb3fd419a0a9ead736e1bf4ff66dcc40a4ffa967f4747e1e466b1643b356ed"
+    },
+    "research/validation/u64_u65_final_checks.log": {
+      "bytes": 630,
+      "sha256": "37000abb015c3ef28aa00eae35389b9ff8b35933cc1f8715816ba42a92af7b87"
+    },
+    "research/validation/u64_u65_initial_compile_failure.log": {
+      "bytes": 587,
+      "sha256": "ee06cfdfd60777a14786ad9c8c52cecade3a9212a411043eac17f315b8c0a607"
+    }
+  }
+}

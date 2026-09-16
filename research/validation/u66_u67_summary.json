@@ -1,0 +1,19 @@
+{
+  "status": "pass",
+  "model": "exact B2 sampled-column factor graph",
+  "localChecks": 4096,
+  "bruteCases": 65,
+  "rankCases": 264,
+  "duplicateCases": 40,
+  "rareChains": [
+    {"name":"rare-chain-1","count":"4","width":0,"rawTotal":"16"},
+    {"name":"rare-chain-2","count":"32","width":1,"rawTotal":"256"},
+    {"name":"rare-chain-3","count":"256","width":1,"rawTotal":"4096"},
+    {"name":"rare-chain-4","count":"2048","width":1,"rawTotal":"65536"}
+  ],
+  "sharedDiamond": {"favorablePrefix":672,"weightedTarget":1344,"independentFavorablePrediction":720,"independentWeightedPrediction":1440},
+  "independentAgreement": {"localChecks":4096,"randomCases":60,"duplicateCases":40,"diamond":{"count":1344,"favorable":672,"weighted":1344,"independentFavorable":720,"independentWeighted":1440}},
+  "resultsSha256": "7a9338c796d9ae9660d1c3045e0155433fd2554748a81cb8c618e3478b8feb72",
+  "independentSha256": "3796cd236e3b79575e8ffa69a831d8e3fa3ca3a91da4026a42282a179cfe41ed",
+  "scope": "bounded-width exact counting/sampling; Karp-Luby component circularity; exact #P-completeness only, no approximation hardness or P/NP resolution"
+}

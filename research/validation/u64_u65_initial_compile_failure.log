@@ -1,0 +1,6 @@
+Initial strict TypeScript compile attempt failed before execution with unused-code diagnostics only:
+code/u64_u65_audit.ts(5,6): error TS6196: 'Witness' is declared but never used.
+code/u64_u65_audit.ts(18,10): error TS6133: 'findType' is declared but its value is never read.
+code/u64_u65_audit.ts(125,59): error TS6133: 'gates' is declared but its value is never read.
+code/u64_u65_audit.ts(183,69): error TS6133: 'selectedCols' is declared but its value is never read.
+No mathematical run occurred from that revision. The declarations were removed before the first passing execution.

@@ -1,0 +1,21 @@
++ node --version
+v22.16.0
++ tsc --version
+Version 5.8.3
++ python --version
+Python 3.13.5
++ tsc strict
++ node --check
++ node execute fresh
++ cmp main
++ python compile
++ python execute
+{"balancedChecks": 1536, "pairingChecks": 256, "restrictedWords": 87380, "status": "pass", "transformHistogram": {"2": 4, "4": 8, "8": 4}, "walshChecks": 4096}
++ sha256
+919700afc642fc2743d03d656eab8d38b36e94ccd72979df2861cebc48c9a57e  research/validation/u68_u69_results.json
+5b64beff723b9a8a2654f9440e4b175e7146f9b25fb94c830b0c8308de6b412a  research/validation/u68_u69_independent_results.json
+a99a78dc32109b1214f2ce3bafcd725672b7a7322379f225b03f2622ebbb488e  code/u68_u69_audit.ts
+9f4abbe0f498e1830f75db47c5177ac4edfcc306576761500401de4a04beefba  code/u68_u69_independent.py
+8a9bf06f63dbefd3e0e04423c1c0db6c367316a91b94f0bfb29dcd07c93a812c  research/U68_four_row_walsh_collision_identity_and_cancellation.md
+30864defc52b1eea0e537ac0d65b3d2f8aa5d1ae45015dc28beed99cb56a9f66  research/U69_favorable_prefix_nfa_barrier_but_dense_sampler.md
+de35d10be4ae6aece7198ad07598313f9d36b8492455ffd82d0645d1219bcb67  research/validation/u68_u69_protocol.md

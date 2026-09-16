@@ -1,0 +1,80 @@
+{
+  "status": "pass",
+  "compressionByQ": {
+    "1": 1,
+    "2": 7,
+    "3": 79,
+    "4": 1307
+  },
+  "compressionCases": 1394,
+  "balancedSupport": [
+    {
+      "targetShape": 3,
+      "favorablePairs": 21,
+      "gateTypeMultiplicityHistogram": {
+        "1": 6,
+        "2": 12,
+        "4": 3
+      }
+    },
+    {
+      "targetShape": 5,
+      "favorablePairs": 21,
+      "gateTypeMultiplicityHistogram": {
+        "1": 6,
+        "2": 12,
+        "4": 3
+      }
+    },
+    {
+      "targetShape": 6,
+      "favorablePairs": 21,
+      "gateTypeMultiplicityHistogram": {
+        "1": 6,
+        "2": 12,
+        "4": 3
+      }
+    }
+  ],
+  "topologyCases": 52,
+  "bruteCases": 52,
+  "prefixCases": 96660,
+  "constructedWitnesses": 308,
+  "fiveRow": {
+    "partitions": {
+      "p": [0,0,0,1,1],
+      "q": [0,1,2,0,1],
+      "target": [0,0,1,0,1],
+      "meet": [0,1,2,3,4]
+    },
+    "leafColumns": [24,4,18],
+    "distinctLeafTuples": 5,
+    "badTopology": {
+      "gates": [[1,2],[0,3]],
+      "count": 0
+    },
+    "goodTopology": {
+      "gates": [[0,2],[3,1]],
+      "count": 4,
+      "firstWitness": [7,9],
+      "declaredWitness": [7,11],
+      "intermediate": 15
+    }
+  },
+  "countSeparation": {
+    "leafColumns": [12,10],
+    "target": 6,
+    "topologyA": {
+      "gates": [[0,1],[2,2]],
+      "count": 8
+    },
+    "topologyB": {
+      "gates": [[0,1],[0,2]],
+      "count": 4
+    }
+  },
+  "hashes": {
+    "main": "045b149dea80bbbb35be186481ab73ed1034ffb9081d29875f8810e9f52091d3",
+    "independent": "724624b39e558846117b0fdd35519560b86739d1db8f87763db81d407c651da5"
+  }
+}

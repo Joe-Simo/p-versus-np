@@ -116,21 +116,22 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
     print(f"Focus: Bit-Parallel SAT Sieve, Barrier Compliance & Lean 4 Formal Gate")
     print("=" * 75)
 
-    # Step 0: Jev Advisory
-    print(f"\n>>> [Step 0] JevGenius P vs NP Advisory & Hypothesis Triage (Cycle {cycle})...")
-    try:
-        triage = jev_pnp.screen_candidate(
-            f"cycle_{cycle}_pnp_screen",
-            f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory."
-        )
-        score = triage.get("answers", {}).get("viability_score", {}).get("score", "ok")
-        print(f"         [Step 0] Jev Triage completed successfully (viability score: {score}).")
-    except Exception as e:
-        print(f"         [Step 0] Jev call note: {e}")
+    # Step 0: Jev Advisory (Epoch-based every 10 cycles or initial cycle)
+    if cycle % 10 == 1 or cycle <= 2:
+        print(f"\n>>> [Step 0] JevGenius P vs NP Advisory & Hypothesis Triage (Cycle {cycle})...")
+        try:
+            triage = jev_pnp.screen_candidate(
+                f"cycle_{cycle}_pnp_screen",
+                f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory."
+            )
+            score = triage.get("answers", {}).get("viability_score", {}).get("score", "ok")
+            print(f"         [Step 0] Jev Triage completed successfully (viability score: {score}).")
+        except Exception as e:
+            print(f"         [Step 0] Jev call note: {e}")
 
-    # Step 1: OpenMP Bit-Parallel SAT Sieve
-    vars_to_test = 20 + (cycle % 4)
-    print(f"\n>>> [Step 1] OpenMP Hardware-Accelerated Bit-Parallel SAT Sieve (Testing N={vars_to_test} vars)...")
+    # Step 1: OpenMP High-Intensity Bit-Parallel SAT Sieve (24 to 27 vars: up to 134M assignments)
+    vars_to_test = 24 + ((cycle - 1) % 4)
+    print(f"\n>>> [Step 1] OpenMP Hardware-Accelerated Bit-Parallel SAT Sieve (Testing N={vars_to_test} vars, All 8 Cores)...")
     binary = REPO_ROOT / "code" / "sat_circuit_sieve_fast"
     if not binary.exists():
         cmd = (
@@ -274,7 +275,7 @@ def main() -> None:
             print(f"\n[Engine] Reached target max cycles ({args.max_cycles}). Stopping cleanly.")
             break
 
-        time.sleep(0.5)
+        time.sleep(0.02)
 
 
 if __name__ == "__main__":

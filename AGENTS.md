@@ -36,4 +36,5 @@ Jev decisions that are fast, cheap, and mandatory:
 | `code/autonomous_pnp_engine.py` | High-throughput multi-core autonomous research daemon. |
 | `formalization/CookLevinFoundations.lean` | Lean 4 machine-checked proof of polynomial reduction and tableau consistency. |
 | `sources/NO_GO_REGISTER.md` | Primary register of complexity barriers and refuted frameworks. |
+| `sources/FAILED_CALCULATIONS_REGISTER.md` | Authoritative register of refuted literature calculations, retracted papers, and excluded heuristics. |
 | `CHECKPOINT.json` | Persistent machine-readable project state. |

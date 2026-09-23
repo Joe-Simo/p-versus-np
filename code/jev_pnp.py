@@ -34,6 +34,11 @@ def build_questions() -> dict[str, Any]:
             true="Uses properties that fail relative to low-degree polynomial algebraic oracles",
             false="Relies only on polynomial method extensions that algebrize"
         ),
+        "avoids_monotone_approximation_trap": jev.noul(
+            "If using circuit approximations, does the argument avoid Norbert Blum's error explosion trap on NOT gates?",
+            true="Avoids extending monotone approximations to general circuits without non-natural machinery",
+            false="Claims to extend monotone circuit approximations to general circuits via bounded NOT errors"
+        ),
         "worst_case_guarantee": jev.choice(
             "What computational model and guarantee does the candidate establish?",
             criteria={

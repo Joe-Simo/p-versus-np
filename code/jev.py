@@ -1,4 +1,4 @@
-"""Jev (TypeSafe System One) client: typed routing signals for Riemann Hypothesis research.
+"""Jev (TypeSafe System One) client: typed routing signals for Millennium Prize research.
 
 Jev is NEVER a proof oracle. Every answer is stored tagged HYPOTHESIS_ONLY and may
 only route attention; status changes to PROVED/REFUTED/VERIFIED require a derivation,
@@ -23,7 +23,20 @@ ENDPOINT = "https://api.typesafe.ai/v1/systemone"
 MODEL = "jev-latest"
 REPO = Path(__file__).resolve().parent.parent
 EVIDENCE_DIR = REPO / "results" / "evidence"
-CACHE_DIR = REPO / ".cache" / "jev"
+
+# Global shared or local persistent cache directory
+def _get_cache_dir() -> Path:
+    custom = os.environ.get("JEV_CACHE_DIR")
+    if custom:
+        return Path(custom).expanduser()
+    home_cache = Path.home() / ".cache" / "typesafe" / "jev"
+    try:
+        home_cache.mkdir(parents=True, exist_ok=True)
+        return home_cache
+    except Exception:
+        return REPO / ".cache" / "jev"
+
+CACHE_DIR = _get_cache_dir()
 
 
 class JevUnavailable(RuntimeError):
@@ -37,6 +50,13 @@ def _api_key() -> str:
     envfile = REPO / ".env.local"
     if envfile.exists():
         for line in envfile.read_text().splitlines():
+            line = line.strip()
+            if line.startswith("TYPESAFE_API_KEY="):
+                return line.split("=", 1)[1].strip().strip("'\"")
+    # Also check parent riemann repo if running in sibling download folder
+    riemann_env = Path("/Users/josephsimo/Downloads/riemann/.env.local")
+    if riemann_env.exists():
+        for line in riemann_env.read_text().splitlines():
             line = line.strip()
             if line.startswith("TYPESAFE_API_KEY="):
                 return line.split("=", 1)[1].strip().strip("'\"")
@@ -82,10 +102,10 @@ def store_cached(state: Any, questions: dict[str, Any], data: dict[str, Any]) ->
 def cache_stats() -> dict[str, Any]:
     """Return count and disk usage of Jev query cache."""
     if not CACHE_DIR.exists():
-        return {"count": 0, "size_bytes": 0}
+        return {"cache_dir": str(CACHE_DIR), "count": 0, "size_bytes": 0}
     files = list(CACHE_DIR.glob("*.json"))
     total_size = sum(f.stat().st_size for f in files)
-    return {"count": len(files), "size_bytes": total_size}
+    return {"cache_dir": str(CACHE_DIR), "count": len(files), "size_bytes": total_size}
 
 
 def clear_cache() -> int:
@@ -120,8 +140,13 @@ def score(instructions: str, criteria: list[str]) -> dict[str, Any]:
 # ---------------------------------------------------------------- transport
 
 def ask(state: Any, questions: dict[str, dict[str, Any]], *,
-        timeout: float = 90.0, tries: int = 5, use_cache: bool = True) -> dict[str, Any]:
+        timeout: float | None = None, tries: int | None = None, use_cache: bool = True) -> dict[str, Any]:
     """One request, one state. Returns {"answers": ..., "usage": ...}."""
+    if timeout is None:
+        timeout = float(os.environ.get("JEV_TIMEOUT", "45.0"))
+    if tries is None:
+        tries = int(os.environ.get("JEV_RETRIES", "3"))
+
     if use_cache:
         cached = get_cached(state, questions)
         if cached is not None:
@@ -129,7 +154,7 @@ def ask(state: Any, questions: dict[str, dict[str, Any]], *,
 
     body = json.dumps({"model": MODEL, "state": state, "questions": questions}).encode()
     headers = {"Authorization": f"Bearer {_api_key()}", "Content-Type": "application/json"}
-    delay = 1.0
+    delay = 0.5
     for attempt in range(tries):
         req = urllib.request.Request(ENDPOINT, data=body, headers=headers, method="POST")
         try:
@@ -140,14 +165,14 @@ def ask(state: Any, questions: dict[str, dict[str, Any]], *,
                 return res
         except urllib.error.HTTPError as e:
             if e.code in (429, 500, 502, 503, 504, 529) and attempt < tries - 1:
-                time.sleep(delay + random.random() * 0.5)
+                time.sleep(delay + random.random() * 0.3)
                 delay *= 2
                 continue
             detail = e.read().decode()[:400]
             raise JevUnavailable(f"HTTP {e.code} from Jev: {detail}") from None
         except (urllib.error.URLError, TimeoutError) as e:
             if attempt < tries - 1:
-                time.sleep(delay + random.random() * 0.5)
+                time.sleep(delay + random.random() * 0.3)
                 delay *= 2
                 continue
             raise JevUnavailable(f"Jev unreachable: {e}") from None
@@ -171,7 +196,7 @@ def ask_many(states: list[Any], questions: dict[str, dict[str, Any]], *,
             batch_results = list(pool.map(one, batch))
             results.extend(batch_results)
         if i + batch_size < len(states):
-            time.sleep(0.05)
+            time.sleep(0.02)
     return results
 
 

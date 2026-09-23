@@ -6,9 +6,12 @@
  *    64 assignments evaluated per lane using SIMD bitwise ops:
  *    clause = lit1 | lit2 | lit3; formula = & (clause_k).
  * 2. Hard formula benchmarking: Pigeonhole Principle PHP(n, n-1) and Tseitin graphs.
- * 3. Random 3-SAT phase transition generator around alpha = 4.26.
+ * 3. Random 3-SAT phase transition generator around alpha = 4.26 with splitmix64 PRNG.
  *
- * Multi-threaded OpenMP kernel testing hundreds of millions of clauses & assignments/sec.
+ * Optimizations:
+ * - Precomputed static bit patterns for lowest 6 variables in L1 cache.
+ * - Loop unrolling for 3-SAT clauses.
+ * - Branchless literal mask evaluation.
  */
 
 #include <stdio.h>
@@ -23,20 +26,32 @@ typedef struct {
     int size;
 } Clause;
 
+// Static precomputed repeating patterns for lowest 6 variable bits across 64 lanes
+static const uint64_t low_patterns[6] = {
+    0xAAAAAAAAAAAAAAAAULL,
+    0xCCCCCCCCCCCCCCCCULL,
+    0xF0F0F0F0F0F0F0F0ULL,
+    0xFF00FF00FF00FF00ULL,
+    0xFFFF0000FFFF0000ULL,
+    0xFFFFFFFF00000000ULL
+};
+
+static inline uint64_t splitmix64(uint64_t* x) {
+    *x += 0x9e3779b97f4a7c15ULL;
+    uint64_t z = *x;
+    z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
+    z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
+    return z ^ (z >> 31);
+}
+
 // Generate PHP(pigeons, holes) formula: pigeons into holes, pigeons = holes + 1
-// Number of variables = pigeons * holes.
-// PHP is unsatisfiable (classical exponential lower bound for Resolution, Haken 1985).
 static int generate_php(int holes, Clause** out_clauses, int* out_vars) {
     int pigeons = holes + 1;
     *out_vars = pigeons * holes;
-    // Each pigeon must be in at least one hole: pigeons clauses of size holes
-    // No two pigeons in the same hole: holes * (pigeons choose 2) clauses of size 2
     int num_clauses = pigeons + holes * (pigeons * (pigeons - 1) / 2);
     Clause* c = (Clause*)malloc(sizeof(Clause) * num_clauses);
     int idx = 0;
 
-    // Pigeon variable indexing: pigeon i (0..pigeons-1), hole j (0..holes-1) -> var = i*holes + j + 1
-    // At least one hole per pigeon (for 3-SAT, decompose if holes > 3, or store up to 3)
     for (int p = 0; p < pigeons; ++p) {
         c[idx].size = (holes <= 3) ? holes : 3;
         for (int h = 0; h < c[idx].size; ++h) {
@@ -45,7 +60,6 @@ static int generate_php(int holes, Clause** out_clauses, int* out_vars) {
         idx++;
     }
 
-    // At most one pigeon per hole
     for (int h = 0; h < holes; ++h) {
         for (int p1 = 0; p1 < pigeons; ++p1) {
             for (int p2 = p1 + 1; p2 < pigeons; ++p2) {
@@ -60,14 +74,6 @@ static int generate_php(int holes, Clause** out_clauses, int* out_vars) {
 
     *out_clauses = c;
     return idx;
-}
-
-static inline uint64_t splitmix64(uint64_t* x) {
-    *x += 0x9e3779b97f4a7c15ULL;
-    uint64_t z = *x;
-    z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
-    z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
-    return z ^ (z >> 31);
 }
 
 // Generate random 3-SAT formula
@@ -133,43 +139,56 @@ int main(int argc, char** argv) {
     // Bit-parallel evaluation: each block processes 64 assignments simultaneously
     #pragma omp parallel reduction(+:satisfying_count)
     {
+        uint64_t var_bits[32];
+
+        // Copy lowest 6 static patterns
+        for (int v = 0; v < 6 && v < n_vars; ++v) {
+            var_bits[v] = low_patterns[v];
+        }
+
         #pragma omp for schedule(dynamic, 1024)
         for (uint64_t b = 0; b < num_blocks; ++b) {
             uint64_t base_assign = b * 64;
 
-            // Compute variable bit patterns for this 64-assignment block
-            // Lane k corresponds to assignment: base_assign + k
-            // For variable v (0..5), bit v toggles with period 2^v
-            uint64_t var_bits[32];
-            for (int v = 0; v < n_vars; ++v) {
-                if (v < 6) {
-                    // Precomputed repeating patterns for lowest 6 bits
-                    uint64_t pattern = 0;
-                    if (v == 0) pattern = 0xAAAAAAAAAAAAAAAAULL;
-                    else if (v == 1) pattern = 0xCCCCCCCCCCCCCCCCULL;
-                    else if (v == 2) pattern = 0xF0F0F0F0F0F0F0F0ULL;
-                    else if (v == 3) pattern = 0xFF00FF00FF00FF00ULL;
-                    else if (v == 4) pattern = 0xFFFF0000FFFF0000ULL;
-                    else if (v == 5) pattern = 0xFFFFFFFF00000000ULL;
-                    var_bits[v] = ((base_assign >> v) & 1) ? ~pattern : pattern;
-                } else {
-                    // For v >= 6, constant across the entire 64-lane block
-                    var_bits[v] = ((base_assign >> v) & 1) ? ~0ULL : 0ULL;
-                }
+            // Update variables v >= 6 (constant across 64-lane block)
+            for (int v = 6; v < n_vars; ++v) {
+                var_bits[v] = ((base_assign >> v) & 1) ? ~0ULL : 0ULL;
             }
 
             uint64_t sat_mask = ~0ULL;
-            for (int c = 0; c < total_clauses; ++c) {
-                uint64_t c_mask = 0;
-                for (int j = 0; j < clauses[c].size; ++j) {
-                    int l = clauses[c].lit[j];
-                    if (l == 0) continue;
-                    int v = abs(l) - 1;
-                    uint64_t v_mask = var_bits[v];
-                    c_mask |= (l > 0) ? v_mask : ~v_mask;
+
+            if (!php_mode) {
+                // Fully unrolled 3-SAT clause loop
+                for (int c = 0; c < total_clauses; ++c) {
+                    int l0 = clauses[c].lit[0];
+                    int l1 = clauses[c].lit[1];
+                    int l2 = clauses[c].lit[2];
+
+                    int v0 = abs(l0) - 1;
+                    int v1 = abs(l1) - 1;
+                    int v2 = abs(l2) - 1;
+
+                    uint64_t m0 = (l0 > 0) ? var_bits[v0] : ~var_bits[v0];
+                    uint64_t m1 = (l1 > 0) ? var_bits[v1] : ~var_bits[v1];
+                    uint64_t m2 = (l2 > 0) ? var_bits[v2] : ~var_bits[v2];
+
+                    sat_mask &= (m0 | m1 | m2);
+                    if (sat_mask == 0) break;
                 }
-                sat_mask &= c_mask;
-                if (sat_mask == 0) break;
+            } else {
+                // Arbitrary clause size loop for PHP
+                for (int c = 0; c < total_clauses; ++c) {
+                    uint64_t c_mask = 0;
+                    for (int j = 0; j < clauses[c].size; ++j) {
+                        int l = clauses[c].lit[j];
+                        if (l == 0) continue;
+                        int v = abs(l) - 1;
+                        uint64_t v_mask = var_bits[v];
+                        c_mask |= (l > 0) ? v_mask : ~v_mask;
+                    }
+                    sat_mask &= c_mask;
+                    if (sat_mask == 0) break;
+                }
             }
 
             // Mask out out-of-range lanes on final block

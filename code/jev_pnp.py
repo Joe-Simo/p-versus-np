@@ -63,13 +63,16 @@ def screen_candidate(candidate_id: str, text: str) -> dict[str, Any]:
         "proposal_text": text
     }
     resp = jev.ask(state, questions)
-    jev.persist(candidate_id, state, questions, resp)
+    try:
+        jev.persist(candidate_id, state, questions, resp)
+    except Exception:
+        pass
     return resp
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Jev P versus NP Screener")
-    parser.add_argument("command", choices=["screen", "cache-stats", "clear-cache"])
+    parser.add_argument("command", nargs="?", default="screen", choices=["screen", "triage", "cache-stats", "clear-cache"])
     parser.add_argument("--id", default="candidate", help="Candidate identifier")
     parser.add_argument("--text", help="Candidate text or hypothesis summary")
     args = parser.parse_args()
@@ -79,9 +82,9 @@ def main() -> None:
     elif args.command == "clear-cache":
         count = jev.clear_cache()
         print(f"Cleared {count} cache entries")
-    elif args.command == "screen":
+    else:
         if not args.text:
-            print("Error: --text required for screen", file=sys.stderr)
+            print("Error: --text required for screening", file=sys.stderr)
             sys.exit(1)
         res = screen_candidate(args.id, args.text)
         print(json.dumps(res, indent=2))

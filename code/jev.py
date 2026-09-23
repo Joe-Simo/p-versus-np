@@ -28,13 +28,17 @@ EVIDENCE_DIR = REPO / "results" / "evidence"
 def _get_cache_dir() -> Path:
     custom = os.environ.get("JEV_CACHE_DIR")
     if custom:
-        return Path(custom).expanduser()
+        p = Path(custom).expanduser()
+        p.mkdir(parents=True, exist_ok=True)
+        return p
     home_cache = Path.home() / ".cache" / "typesafe" / "jev"
     try:
         home_cache.mkdir(parents=True, exist_ok=True)
         return home_cache
     except Exception:
-        return REPO / ".cache" / "jev"
+        local_cache = REPO / ".cache" / "jev"
+        local_cache.mkdir(parents=True, exist_ok=True)
+        return local_cache
 
 CACHE_DIR = _get_cache_dir()
 
@@ -46,14 +50,14 @@ class JevUnavailable(RuntimeError):
 def _api_key() -> str:
     key = os.environ.get("TYPESAFE_API_KEY")
     if key:
-        return key.strip()
+        return key.strip().strip("'\"")
     envfile = REPO / ".env.local"
     if envfile.exists():
         for line in envfile.read_text().splitlines():
             line = line.strip()
             if line.startswith("TYPESAFE_API_KEY="):
                 return line.split("=", 1)[1].strip().strip("'\"")
-    # Also check parent riemann repo if running in sibling download folder
+    # Check parent/sibling riemann folder if running in hodge/pversusnp/yang
     riemann_env = Path("/Users/josephsimo/Downloads/riemann/.env.local")
     if riemann_env.exists():
         for line in riemann_env.read_text().splitlines():
@@ -87,14 +91,16 @@ def get_cached(state: Any, questions: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def store_cached(state: Any, questions: dict[str, Any], data: dict[str, Any]) -> None:
-    """Store successful response into persistent query cache."""
+    """Store successful response into persistent query cache via atomic write."""
     if os.environ.get("JEV_NO_CACHE") == "1":
         return
     try:
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
         ckey = _cache_key(state, questions)
         cpath = CACHE_DIR / f"{ckey}.json"
-        cpath.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        tmppath = CACHE_DIR / f"{ckey}.tmp.{os.getpid()}.{time.time_ns()}"
+        tmppath.write_text(json.dumps(data, indent=2), encoding="utf-8")
+        tmppath.replace(cpath)
     except Exception:
         pass
 
@@ -207,7 +213,8 @@ def persist(candidate_id: str, state: Any, questions: dict[str, Any],
     """Store raw request + answers so exploration tree can be reconstructed."""
     EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
     path = EVIDENCE_DIR / f"{candidate_id}_{int(time.time())}.json"
-    path.write_text(json.dumps({
+    tmppath = EVIDENCE_DIR / f"{candidate_id}_{int(time.time())}.tmp.{os.getpid()}"
+    tmppath.write_text(json.dumps({
         "state": "HYPOTHESIS_ONLY",
         "candidate_id": candidate_id,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
@@ -215,5 +222,6 @@ def persist(candidate_id: str, state: Any, questions: dict[str, Any],
         "request_state": state,
         "questions": questions,
         "response": response,
-    }, indent=2))
+    }, indent=2), encoding="utf-8")
+    tmppath.replace(path)
     return path

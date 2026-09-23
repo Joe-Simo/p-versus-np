@@ -21,6 +21,9 @@ import time
 from pathlib import Path
 from typing import Any
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(line_buffering=True)
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "code"))
 

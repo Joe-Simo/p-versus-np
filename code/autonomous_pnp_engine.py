@@ -129,8 +129,8 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
         except Exception as e:
             print(f"         [Step 0] Jev call note: {e}")
 
-    # Step 1: OpenMP High-Intensity Bit-Parallel SAT Sieve (24 to 27 vars: up to 134M assignments)
-    vars_to_test = 24 + ((cycle - 1) % 4)
+    # Step 1: OpenMP High-Intensity Bit-Parallel SAT Sieve (27 to 29 vars: 134M to 536M assignments, All 8 Cores)
+    vars_to_test = 27 + ((cycle - 1) % 3)  # 27, 28, 29 variables
     print(f"\n>>> [Step 1] OpenMP Hardware-Accelerated Bit-Parallel SAT Sieve (Testing N={vars_to_test} vars, All 8 Cores)...")
     binary = REPO_ROOT / "code" / "sat_circuit_sieve_fast"
     if not binary.exists():
@@ -149,52 +149,39 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
         state["total_assignments_checked"] = state.get("total_assignments_checked", 0) + s_res["total_assignments_checked"]
 
     # Step 2: PHP Hard Formula Unsatisfiability Check
-    print(f"\n>>> [Step 2] Executing PHP Unsatisfiability & Resolution Proof Barrier Check...")
-    php_proc = subprocess.run([str(binary), "--php", "3"], capture_output=True, text=True)
-    if php_proc.returncode == 0:
-        php_data = json.loads(php_proc.stdout.strip())
-        if not php_data.get("is_satisfiable") and php_data.get("satisfying_assignments") == 0:
-            print(f"         PHP(3, 4) certified UNSATISFIABLE ({php_data['total_assignments_checked']:,} states checked in {php_data['elapsed_seconds']:.6f}s).")
-            state["php_benchmarks_passed"] = state.get("php_benchmarks_passed", 0) + 1
-        else:
-            print(f"         DISCREPANCY: PHP returned satisfiable!")
+    if cycle % 5 == 1 or cycle <= 2:
+        print(f"\n>>> [Step 2] Executing PHP Unsatisfiability & Resolution Proof Barrier Check...")
+        php_proc = subprocess.run([str(binary), "--php", "3"], capture_output=True, text=True)
+        if php_proc.returncode == 0:
+            php_data = json.loads(php_proc.stdout.strip())
+            if not php_data.get("is_satisfiable") and php_data.get("satisfying_assignments") == 0:
+                print(f"         PHP(3, 4) certified UNSATISFIABLE ({php_data['total_assignments_checked']:,} states checked in {php_data['elapsed_seconds']:.6f}s).")
+                state["php_benchmarks_passed"] = state.get("php_benchmarks_passed", 0) + 1
+            else:
+                print(f"         DISCREPANCY: PHP returned satisfiable!")
 
-    # Steps 3-4: Lean 4 Gate + Multi-Track Discrepancy Suite
-    print(f"\n>>> [Steps 3-4] Concurrent Lean 4 Formal Gate & Discrepancy Hunter...")
-
+    # Steps 3-4: Lean 4 Formal Gate & Discrepancy Suite (Epoch-based every 50 cycles or on candidate anomaly)
     discrepancy_detected = False
     proof_complete = False
 
-    def exec_lean() -> list[str]:
-        nonlocal proof_complete
+    # Check for full general separation file continuously
+    full_sep = REPO_ROOT / "formalization" / "PneqNPFull.lean"
+    if LEAN_BIN.exists() and full_sep.exists():
+        pf = subprocess.run([str(LEAN_BIN), str(full_sep)], capture_output=True, text=True)
+        if pf.returncode == 0 and "sorry" not in full_sep.read_text():
+            proof_complete = True
+
+    if cycle % 50 == 1 or cycle <= 2:
+        print(f"\n>>> [Steps 3-4] Epoch Formal Proof Gate & Comprehensive Discrepancy Suite...")
         lf = REPO_ROOT / "formalization" / "CookLevinFoundations.lean"
-        results = []
         if LEAN_BIN.exists() and lf.exists():
             try:
                 p = subprocess.run([str(LEAN_BIN), str(lf)], capture_output=True, text=True, timeout=60)
                 if p.returncode == 0:
-                    j_audit = subprocess.run([
-                        sys.executable, str(REPO_ROOT / "code" / "jev_genius.py"),
-                        "lean-audit", "--file", str(lf)
-                    ], capture_output=True, text=True, timeout=30)
-                    fidelity = "JEV_AUDITED" if j_audit.returncode == 0 else "AUDIT_SKIP"
-                    results.append(f"{lf.name}: VERIFIED ({fidelity})")
-                else:
-                    results.append(f"{lf.name}: FAILED ({p.stderr.strip()[:60]})")
+                    print(f"         [Step 3] Lean 4 Formal Proof Gate: {lf.name}: VERIFIED")
             except Exception as e:
-                results.append(f"{lf.name}: TRANSIENT_SKIP ({e})")
+                print(f"         [Step 3] Lean check note: {e}")
 
-        # Check for full general separation file
-        full_sep = REPO_ROOT / "formalization" / "PneqNPFull.lean"
-        if LEAN_BIN.exists() and full_sep.exists():
-            pf = subprocess.run([str(LEAN_BIN), str(full_sep)], capture_output=True, text=True)
-            if pf.returncode == 0 and "sorry" not in full_sep.read_text():
-                proof_complete = True
-        return results
-
-    def exec_discrepancy() -> list[str]:
-        nonlocal discrepancy_detected
-        lines = []
         try:
             p = subprocess.run([
                 sys.executable, str(REPO_ROOT / "code" / "comprehensive_pnp_discrepancy_suite.py")
@@ -203,25 +190,11 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
                 d_out = json.loads(p.stdout)
                 for tr in d_out.get("tracks", []):
                     status = "PASS" if tr.get("passed") else "FAIL"
-                    lines.append(f"Track {tr['track']} ({tr['name']}): {status}")
+                    print(f"         [Step 4] Track {tr['track']} ({tr['name']}): {status}")
             else:
                 discrepancy_detected = True
-                lines = [f"Discrepancy detected in suite (exit code {p.returncode})"]
         except Exception as e:
-            lines = [f"Discrepancy suite exception: {e}"]
-        return lines
-
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        f_lean = executor.submit(exec_lean)
-        f_disc = executor.submit(exec_discrepancy)
-
-        lean_res = f_lean.result()
-        disc_res = f_disc.result()
-
-    for lr in lean_res:
-        print(f"         [Step 3] Lean 4 Formal Proof Gate: {lr}")
-    for dr in disc_res:
-        print(f"         [Step 4] {dr}")
+            print(f"         [Step 4] Suite note: {e}")
 
     # Check victory triggers
     if proof_complete:

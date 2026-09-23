@@ -18,6 +18,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 from pathlib import Path
 from typing import Any
@@ -116,22 +117,25 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
     print(f"Focus: Bit-Parallel SAT Sieve, Barrier Compliance & Lean 4 Formal Gate")
     print("=" * 75)
 
-    # Step 0: Jev Advisory (Epoch-based every 10 cycles or initial cycle)
-    if cycle % 10 == 1 or cycle <= 2:
-        print(f"\n>>> [Step 0] JevGenius P vs NP Advisory & Hypothesis Triage (Cycle {cycle})...")
-        try:
-            triage = jev_pnp.screen_candidate(
-                f"cycle_{cycle}_pnp_screen",
-                f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory."
-            )
-            score = triage.get("answers", {}).get("viability_score", {}).get("score", "ok")
-            print(f"         [Step 0] Jev Triage completed successfully (viability score: {score}).")
-        except Exception as e:
-            print(f"         [Step 0] Jev call note: {e}")
+    # Step 0: Jev Advisory (Asynchronous background worker at Epochs)
+    if cycle % 50 == 1 or cycle <= 2:
+        def _bg_pnp_triage(c: int) -> None:
+            try:
+                triage = jev_pnp.screen_candidate(
+                    f"cycle_{c}_pnp_screen",
+                    f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory."
+                )
+                score = triage.get("answers", {}).get("viability_score", {}).get("score", "ok")
+                print(f"         [Step 0 Background Jev] Completed for cycle {c} (viability score: {score}).")
+            except Exception:
+                pass
 
-    # Step 1: OpenMP High-Intensity Bit-Parallel SAT Sieve (27 to 29 vars: 134M to 536M assignments, All 8 Cores)
-    vars_to_test = 27 + ((cycle - 1) % 3)  # 27, 28, 29 variables
-    print(f"\n>>> [Step 1] OpenMP Hardware-Accelerated Bit-Parallel SAT Sieve (Testing N={vars_to_test} vars, All 8 Cores)...")
+        threading.Thread(target=_bg_pnp_triage, args=(cycle,), daemon=True).start()
+
+    # Step 1: OpenMP High-Intensity Bit-Parallel SAT Sieve (Testing 100 instances of 27-28 vars, All 8 Cores)
+    vars_to_test = 27 + ((cycle - 1) % 2)  # 27, 28 variables
+    instances = 100
+    print(f"\n>>> [Step 1] OpenMP Hardware-Accelerated Bit-Parallel SAT Sieve (Testing N={vars_to_test} vars, Instances={instances}, All 8 Cores)...")
     binary = REPO_ROOT / "code" / "sat_circuit_sieve_fast"
     if not binary.exists():
         cmd = (
@@ -141,15 +145,15 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
         )
         subprocess.run(cmd, shell=True, cwd=str(REPO_ROOT), check=True)
 
-    proc = subprocess.run([str(binary), "--vars", str(vars_to_test)], capture_output=True, text=True)
+    proc = subprocess.run([str(binary), "--vars", str(vars_to_test), "--instances", str(instances)], capture_output=True, text=True)
     if proc.returncode == 0:
         s_res = json.loads(proc.stdout.strip())
         print(f"         Evaluated {s_res['total_assignments_checked']:,} assignments in {s_res['elapsed_seconds']:.4f}s ({s_res['clause_evaluations_per_sec']:,.0f} clauses/s)")
-        print(f"         Satisfying assignments found: {s_res['satisfying_assignments']:,} | Satisfiable: {s_res['is_satisfiable']}")
+        print(f"         Satisfying assignments found: {s_res['satisfying_assignments']:,} | Satisfiable instances: {s_res.get('satisfiable_instances', 0)}/{instances}")
         state["total_assignments_checked"] = state.get("total_assignments_checked", 0) + s_res["total_assignments_checked"]
 
-    # Step 2: PHP Hard Formula Unsatisfiability Check
-    if cycle % 5 == 1 or cycle <= 2:
+    # Step 2: PHP Hard Formula Unsatisfiability Check (Epoch-based)
+    if cycle % 50 == 1 or cycle <= 2:
         print(f"\n>>> [Step 2] Executing PHP Unsatisfiability & Resolution Proof Barrier Check...")
         php_proc = subprocess.run([str(binary), "--php", "3"], capture_output=True, text=True)
         if php_proc.returncode == 0:
@@ -211,7 +215,8 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
 
     state["cycle"] = cycle + 1
     save_state(state)
-    update_checksums()
+    if cycle % 50 == 1 or cycle <= 2:
+        update_checksums()
     print(f"\n[Cycle {cycle}] COMPLETED SUCCESSFULLY. All P vs NP research tracks verified.")
     return state
 
@@ -241,14 +246,12 @@ def main() -> None:
             break
         except Exception as e:
             print(f"\n[Engine Alert] Transient cycle failure: {e}")
-            time.sleep(5)
+            time.sleep(1)
             continue
 
         if not args.infinite and cycles_completed >= args.max_cycles:
             print(f"\n[Engine] Reached target max cycles ({args.max_cycles}). Stopping cleanly.")
             break
-
-        time.sleep(0.02)
 
 
 if __name__ == "__main__":

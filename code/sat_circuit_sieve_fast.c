@@ -99,6 +99,7 @@ int main(int argc, char** argv) {
     int n_clauses = 94;         // ~4.26 ratio
     bool php_mode = false;
     int php_holes = 3;
+    int instances = 1;
 
     for (int i = 1; i < argc; ++i) {
         if (strcmp(argv[i], "--benchmark") == 0) {
@@ -107,6 +108,8 @@ int main(int argc, char** argv) {
             n_vars = atoi(argv[++i]);
         } else if (strcmp(argv[i], "--clauses") == 0 && i + 1 < argc) {
             n_clauses = atoi(argv[++i]);
+        } else if (strcmp(argv[i], "--instances") == 0 && i + 1 < argc) {
+            instances = atoi(argv[++i]);
         } else if (strcmp(argv[i], "--php") == 0 && i + 1 < argc) {
             php_mode = true;
             php_holes = atoi(argv[++i]);
@@ -118,106 +121,122 @@ int main(int argc, char** argv) {
         }
     }
 
-    Clause* clauses = NULL;
-    int total_clauses = 0;
-
-    if (php_mode) {
-        total_clauses = generate_php(php_holes, &clauses, &n_vars);
-    } else {
-        if (n_clauses <= 0) n_clauses = (int)(4.26 * n_vars);
-        total_clauses = generate_random_3sat(n_vars, n_clauses, 1337, &clauses);
-    }
-
+    if (instances < 1) instances = 1;
     if (n_vars > 30) n_vars = 30; // limit exact enumeration to 2^30
 
     uint64_t total_assignments = 1ULL << n_vars;
     uint64_t num_blocks = (total_assignments + 63) / 64;
 
+    uint64_t total_satisfying_all_instances = 0;
+    int satisfiable_instances = 0;
+    int last_total_clauses = 0;
+
     double t0 = omp_get_wtime();
-    uint64_t satisfying_count = 0;
 
-    // Bit-parallel evaluation: each block processes 64 assignments simultaneously
-    #pragma omp parallel reduction(+:satisfying_count)
-    {
-        uint64_t var_bits[32];
+    for (int inst = 0; inst < instances; ++inst) {
+        Clause* clauses = NULL;
+        int total_clauses = 0;
 
-        // Copy lowest 6 static patterns
-        for (int v = 0; v < 6 && v < n_vars; ++v) {
-            var_bits[v] = low_patterns[v];
+        if (php_mode) {
+            total_clauses = generate_php(php_holes, &clauses, &n_vars);
+        } else {
+            int cur_clauses = n_clauses;
+            if (cur_clauses <= 0) cur_clauses = (int)(4.26 * n_vars);
+            total_clauses = generate_random_3sat(n_vars, cur_clauses, 1337 + inst * 31, &clauses);
         }
+        last_total_clauses = total_clauses;
 
-        #pragma omp for schedule(dynamic, 1024)
-        for (uint64_t b = 0; b < num_blocks; ++b) {
-            uint64_t base_assign = b * 64;
+        uint64_t satisfying_count = 0;
 
-            // Update variables v >= 6 (constant across 64-lane block)
-            for (int v = 6; v < n_vars; ++v) {
-                var_bits[v] = ((base_assign >> v) & 1) ? ~0ULL : 0ULL;
+        // Bit-parallel evaluation: each block processes 64 assignments simultaneously
+        #pragma omp parallel reduction(+:satisfying_count)
+        {
+            uint64_t var_bits[32];
+
+            // Copy lowest 6 static patterns
+            for (int v = 0; v < 6 && v < n_vars; ++v) {
+                var_bits[v] = low_patterns[v];
             }
 
-            uint64_t sat_mask = ~0ULL;
+            #pragma omp for schedule(dynamic, 1024)
+            for (uint64_t b = 0; b < num_blocks; ++b) {
+                uint64_t base_assign = b * 64;
 
-            if (!php_mode) {
-                // Fully unrolled 3-SAT clause loop
-                for (int c = 0; c < total_clauses; ++c) {
-                    int l0 = clauses[c].lit[0];
-                    int l1 = clauses[c].lit[1];
-                    int l2 = clauses[c].lit[2];
-
-                    int v0 = abs(l0) - 1;
-                    int v1 = abs(l1) - 1;
-                    int v2 = abs(l2) - 1;
-
-                    uint64_t m0 = (l0 > 0) ? var_bits[v0] : ~var_bits[v0];
-                    uint64_t m1 = (l1 > 0) ? var_bits[v1] : ~var_bits[v1];
-                    uint64_t m2 = (l2 > 0) ? var_bits[v2] : ~var_bits[v2];
-
-                    sat_mask &= (m0 | m1 | m2);
-                    if (sat_mask == 0) break;
+                // Update variables v >= 6 (constant across 64-lane block)
+                for (int v = 6; v < n_vars; ++v) {
+                    var_bits[v] = ((base_assign >> v) & 1) ? ~0ULL : 0ULL;
                 }
-            } else {
-                // Arbitrary clause size loop for PHP
-                for (int c = 0; c < total_clauses; ++c) {
-                    uint64_t c_mask = 0;
-                    for (int j = 0; j < clauses[c].size; ++j) {
-                        int l = clauses[c].lit[j];
-                        if (l == 0) continue;
-                        int v = abs(l) - 1;
-                        uint64_t v_mask = var_bits[v];
-                        c_mask |= (l > 0) ? v_mask : ~v_mask;
+
+                uint64_t sat_mask = ~0ULL;
+
+                if (!php_mode) {
+                    // Fully unrolled 3-SAT clause loop
+                    for (int c = 0; c < total_clauses; ++c) {
+                        int l0 = clauses[c].lit[0];
+                        int l1 = clauses[c].lit[1];
+                        int l2 = clauses[c].lit[2];
+
+                        int v0 = abs(l0) - 1;
+                        int v1 = abs(l1) - 1;
+                        int v2 = abs(l2) - 1;
+
+                        uint64_t m0 = (l0 > 0) ? var_bits[v0] : ~var_bits[v0];
+                        uint64_t m1 = (l1 > 0) ? var_bits[v1] : ~var_bits[v1];
+                        uint64_t m2 = (l2 > 0) ? var_bits[v2] : ~var_bits[v2];
+
+                        sat_mask &= (m0 | m1 | m2);
+                        if (sat_mask == 0) break;
                     }
-                    sat_mask &= c_mask;
-                    if (sat_mask == 0) break;
+                } else {
+                    // Arbitrary clause size loop for PHP
+                    for (int c = 0; c < total_clauses; ++c) {
+                        uint64_t c_mask = 0;
+                        for (int j = 0; j < clauses[c].size; ++j) {
+                            int l = clauses[c].lit[j];
+                            if (l == 0) continue;
+                            int v = abs(l) - 1;
+                            uint64_t v_mask = var_bits[v];
+                            c_mask |= (l > 0) ? v_mask : ~v_mask;
+                        }
+                        sat_mask &= c_mask;
+                        if (sat_mask == 0) break;
+                    }
                 }
-            }
 
-            // Mask out out-of-range lanes on final block
-            if (b == num_blocks - 1 && (total_assignments % 64) != 0) {
-                int rem = total_assignments % 64;
-                uint64_t valid_lanes = (1ULL << rem) - 1;
-                sat_mask &= valid_lanes;
-            }
+                // Mask out out-of-range lanes on final block
+                if (b == num_blocks - 1 && (total_assignments % 64) != 0) {
+                    int rem = total_assignments % 64;
+                    uint64_t valid_lanes = (1ULL << rem) - 1;
+                    sat_mask &= valid_lanes;
+                }
 
-            satisfying_count += __builtin_popcountll(sat_mask);
+                satisfying_count += __builtin_popcountll(sat_mask);
+            }
         }
+
+        total_satisfying_all_instances += satisfying_count;
+        if (satisfying_count > 0) satisfiable_instances++;
+
+        free(clauses);
     }
 
     double t1 = omp_get_wtime();
     double elapsed = t1 - t0;
-    double evaluations = (double)total_assignments * total_clauses;
-    double rate = (elapsed > 0.0) ? evaluations / elapsed : 0.0;
+    double total_evaluations = (double)total_assignments * (double)last_total_clauses * (double)instances;
+    double rate = (elapsed > 0.0) ? total_evaluations / elapsed : 0.0;
 
     printf("{\n");
     printf("  \"mode\": \"%s\",\n", php_mode ? "PHP" : "Random-3-SAT");
+    printf("  \"instances\": %d,\n", instances);
     printf("  \"variables\": %d,\n", n_vars);
-    printf("  \"clauses\": %d,\n", total_clauses);
-    printf("  \"total_assignments_checked\": %llu,\n", (unsigned long long)total_assignments);
-    printf("  \"satisfying_assignments\": %llu,\n", (unsigned long long)satisfying_count);
-    printf("  \"is_satisfiable\": %s,\n", satisfying_count > 0 ? "true" : "false");
+    printf("  \"clauses\": %d,\n", last_total_clauses);
+    printf("  \"total_assignments_checked\": %llu,\n", (unsigned long long)(total_assignments * instances));
+    printf("  \"satisfying_assignments\": %llu,\n", (unsigned long long)total_satisfying_all_instances);
+    printf("  \"satisfiable_instances\": %d,\n", satisfiable_instances);
+    printf("  \"is_satisfiable\": %s,\n", satisfiable_instances > 0 ? "true" : "false");
     printf("  \"elapsed_seconds\": %.6f,\n", elapsed);
     printf("  \"clause_evaluations_per_sec\": %.2f\n", rate);
     printf("}\n");
 
-    free(clauses);
     return 0;
 }

@@ -1,0 +1,8 @@
+.env.local
+.cache/
+__pycache__/
+*.pyc
+code/sat_circuit_sieve_fast
+results/
+*.log
+state/

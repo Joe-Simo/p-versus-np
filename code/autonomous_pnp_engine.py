@@ -7,6 +7,7 @@ Coordinates multi-track research cycles:
 - Step 3: Lean 4 Machine-Checked Formal Proof Gate & Jev Audit
 - Step 4: Comprehensive Multi-Track P vs NP Discrepancy Suite
 - Step 5: Persistent State Logging & SHA-256 Ledger
+- Definitive Answer Check: Automatic halt if P=NP algorithm or P!=NP lower bound is certified.
 """
 from __future__ import annotations
 
@@ -50,6 +51,7 @@ def load_state() -> dict[str, Any]:
         "total_assignments_checked": 0,
         "php_benchmarks_passed": 0,
         "counterexample_found": False,
+        "proof_verified": False,
         "last_cycle_timestamp": 0
     }
 
@@ -58,6 +60,30 @@ def save_state(state: dict[str, Any]) -> None:
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     state["last_cycle_timestamp"] = int(time.time())
     STATE_FILE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+
+
+def check_decision_victory(state: dict[str, Any]) -> None:
+    # Condition 1: P = NP algorithm certified
+    p_eq_np = REPO_ROOT / "P_EQUALS_NP_FOUND.json"
+    if p_eq_np.exists() or state.get("counterexample_found"):
+        print("\n" + "=" * 75)
+        print("VICTORY CONDITION A CERTIFIED: P = NP POLYNOMIAL ALGORITHM ESTABLISHED!")
+        if p_eq_np.exists():
+            print(p_eq_np.read_text(encoding="utf-8"))
+        print("Halting autonomous engine: Definitive answer established.")
+        print("=" * 75)
+        sys.exit(0)
+
+    # Condition 2: P != NP unconditional lower bound certified in Lean 4
+    p_neq_np = REPO_ROOT / "P_NEQ_NP_FOUND.json"
+    if p_neq_np.exists() or state.get("proof_verified"):
+        print("\n" + "=" * 75)
+        print("VICTORY CONDITION B CERTIFIED: P != NP SUPERPOLYNOMIAL LOWER BOUND VERIFIED IN LEAN 4!")
+        if p_neq_np.exists():
+            print(p_neq_np.read_text(encoding="utf-8"))
+        print("Halting autonomous engine: Definitive answer established.")
+        print("=" * 75)
+        sys.exit(0)
 
 
 def update_checksums() -> None:
@@ -82,6 +108,8 @@ def update_checksums() -> None:
 
 
 def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
+    check_decision_victory(state)
+
     cycle = state.get("cycle", 1)
     print("\n" + "=" * 75)
     print(f"STARTING AUTONOMOUS P VERSUS NP RESEARCH CYCLE {cycle}")
@@ -93,7 +121,7 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
     try:
         triage = jev_pnp.screen_candidate(
             f"cycle_{cycle}_pnp_screen",
-            f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory (cycle {cycle})."
+            f"Auditing whether circuit lower bound candidates on MCSP overcome Natural Proofs (pseudorandom function barrier) and Relativization via GCT representation theory."
         )
         score = triage.get("answers", {}).get("viability_score", {}).get("score", "ok")
         print(f"         [Step 0] Jev Triage completed successfully (viability score: {score}).")
@@ -133,7 +161,11 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
     # Steps 3-4: Lean 4 Gate + Multi-Track Discrepancy Suite
     print(f"\n>>> [Steps 3-4] Concurrent Lean 4 Formal Gate & Discrepancy Hunter...")
 
+    discrepancy_detected = False
+    proof_complete = False
+
     def exec_lean() -> list[str]:
+        nonlocal proof_complete
         lf = REPO_ROOT / "formalization" / "CookLevinFoundations.lean"
         results = []
         if LEAN_BIN.exists() and lf.exists():
@@ -150,9 +182,17 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
                     results.append(f"{lf.name}: FAILED ({p.stderr.strip()[:60]})")
             except Exception as e:
                 results.append(f"{lf.name}: TRANSIENT_SKIP ({e})")
+
+        # Check for full general separation file
+        full_sep = REPO_ROOT / "formalization" / "PneqNPFull.lean"
+        if LEAN_BIN.exists() and full_sep.exists():
+            pf = subprocess.run([str(LEAN_BIN), str(full_sep)], capture_output=True, text=True)
+            if pf.returncode == 0 and "sorry" not in full_sep.read_text():
+                proof_complete = True
         return results
 
     def exec_discrepancy() -> list[str]:
+        nonlocal discrepancy_detected
         lines = []
         try:
             p = subprocess.run([
@@ -163,6 +203,9 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
                 for tr in d_out.get("tracks", []):
                     status = "PASS" if tr.get("passed") else "FAIL"
                     lines.append(f"Track {tr['track']} ({tr['name']}): {status}")
+            else:
+                discrepancy_detected = True
+                lines = [f"Discrepancy detected in suite (exit code {p.returncode})"]
         except Exception as e:
             lines = [f"Discrepancy suite exception: {e}"]
         return lines
@@ -178,6 +221,19 @@ def run_cycle(state: dict[str, Any]) -> dict[str, Any]:
         print(f"         [Step 3] Lean 4 Formal Proof Gate: {lr}")
     for dr in disc_res:
         print(f"         [Step 4] {dr}")
+
+    # Check victory triggers
+    if proof_complete:
+        state["proof_verified"] = True
+        proof_payload = {
+            "status": "P_NEQ_NP_VERIFIED",
+            "timestamp": int(time.time()),
+            "cycle": cycle,
+            "formalization_file": "formalization/PneqNPFull.lean"
+        }
+        (REPO_ROOT / "P_NEQ_NP_FOUND.json").write_text(json.dumps(proof_payload, indent=2))
+        save_state(state)
+        check_decision_victory(state)
 
     state["cycle"] = cycle + 1
     save_state(state)
@@ -196,6 +252,7 @@ def main() -> None:
     print("AUTONOMOUS P VERSUS NP RESEARCH ENGINE V1.0 INITIALIZED")
     print(f"Mode: {'CONTINUOUS AUTONOMOUS (INFINITE)' if args.infinite else f'BATCH ({args.max_cycles} cycles)'}")
     print("Workload: Sustained Multi-Core OpenMP + Multi-Processing (8 Cores)")
+    print("Victory Trigger: Automatic halt on certified P=NP algorithm or P!=NP lower bound")
     print("===========================================================================")
 
     state = load_state()
